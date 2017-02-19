@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{32ce5ea8-8b80-4b27-9ecf-a2f8af5cccf6}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{bf0d1c8e-e9d6-4d0c-8131-84f6f35ec55e}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Lab Files">
+      <UniqueIdentifier>{7bd29ea8-3345-438f-ae25-e6b4682024bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Canvas">
+      <UniqueIdentifier>{09c42f17-0e19-4b33-b42b-cc660c7dbc42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{32b8e594-4e84-4767-8250-7e6f1542f395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elements">
+      <UniqueIdentifier>{50eb9254-f347-4ad5-b09c-25040f4ab124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elements\Points">
+      <UniqueIdentifier>{8d5ce1d8-8ec3-4b28-a833-6abdec09f487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elements\AbstractElements">
+      <UniqueIdentifier>{d4545b5f-832e-4bb5-b161-0e7b7c95711f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elements\CustomElements">
+      <UniqueIdentifier>{8a332b78-6c95-434d-af89-415ef4f1861a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Lab1.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Lab1.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_Lab1.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Lab1.cpp">
+      <Filter>Lab Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Lab Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>Canvas</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Canvas.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Canvas.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Elements\Points</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Lab1.ui">
+      <Filter>Lab Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Lab1.h">
+      <Filter>Lab Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Lab1.qrc">
+      <Filter>Lab Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Canvas.hpp">
+      <Filter>Canvas</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_Lab1.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.hpp">
+      <Filter>Elements\Points</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractElement.hpp">
+      <Filter>Elements\AbstractElements</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexElement.hpp">
+      <Filter>Elements\AbstractElements</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleElement.hpp">
+      <Filter>Elements\AbstractElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+    <ClInclude Include="SquareCircle.h">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FragmentShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
