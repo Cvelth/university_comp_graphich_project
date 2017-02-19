@@ -26,7 +26,8 @@ class Canvas : public QOpenGLWidget, protected QOpenGLFunctions {
 
 private:
 	Color foreground, background;
-	float size, number, angle;
+	float size, scale, number, lineWidth;
+	int elementAngle, sceneAngle;
 
 	GLuint* buffers;
 	
@@ -63,8 +64,10 @@ protected:
 	virtual void sendRotateSceneMatrix(float angle, float x, float y, float z);
 	virtual void sendTranslateMatrix(float x, float y);
 	virtual void sendRotateElemMatrix(float angle, float x, float y, float z);
-	virtual void sendScaleMatrix(float scale);
-	virtual void sendScaleMatrix(float x, float y, float z);
+	virtual void sendScaleElementMatrix(float scale);
+	virtual void sendScaleElementMatrix(float x, float y, float z);
+	virtual void sendSceneScaleMatrix(float scale);
+	virtual void sendSceneScaleMatrix(float x, float y, float z);
 	virtual void sendForegroundColor(Color c);
 
 public:
@@ -82,6 +85,9 @@ public slots :
 	void setBackgroundA(size_t i);
 
 	void setSize(size_t i);
+	void setScale(size_t i);
 	void setNumber(size_t i);
-	void setAngle(size_t i);
+	void setElementAngle(size_t i);
+	void setSceneAngle(size_t i);
+	void setLineWidth(size_t i);
 };

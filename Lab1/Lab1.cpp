@@ -20,9 +20,12 @@ Lab1::Lab1(QWidget *parent)
 	ui.FG->setValue(50);
 	ui.FB->setValue(50);
 
-	ui.Angle->setValue(0);
-	ui.Number->setValue(50);
-	ui.Size->setValue(50);
+	ui.ElementAngle->setValue(0);
+	ui.SceneAngle->setValue(0);
+	ui.Number->setValue(1);
+	ui.Size->setValue(75);
+	ui.Scale->setValue(75);
+	ui.Width->setValue(250);
 }
 
 void Lab1::connectGUI() {
@@ -35,7 +38,10 @@ void Lab1::connectGUI() {
 	connect(ui.FB, &QSlider::valueChanged, c, &Canvas::setForegroundB);
 	connect(ui.FA, &QSlider::valueChanged, c, &Canvas::setForegroundA);
 
-	connect(ui.Angle, &QSlider::valueChanged, c, &Canvas::setAngle);
+	connect(ui.ElementAngle, &QSlider::valueChanged, c, &Canvas::setElementAngle);
+	connect(ui.SceneAngle, &QSlider::valueChanged, c, &Canvas::setSceneAngle);
 	connect(ui.Size, &QSlider::valueChanged, c, &Canvas::setSize);
+	connect(ui.Scale, &QSlider::valueChanged, c, &Canvas::setScale);
 	connect(ui.Number, &QSlider::valueChanged, c, &Canvas::setNumber);
+	connect(ui.Width, &QSlider::valueChanged, c, &Canvas::setLineWidth);
 }

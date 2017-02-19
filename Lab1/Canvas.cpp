@@ -5,7 +5,7 @@ Canvas::Canvas() : foreground(1.f), background(1.f) {
 	buffers = new GLuint[1];
 	//element = new ComplexElement(Circle(0.f, 0.f, 0.5f));
 	//element = new ComplexElement(Square(0.f, 0.f, 0.5f, 0.5f));
-	element = new SquareCircle(0.f, 0.f, 1.f);
+	element = new SquareCircle(0.f, 0.f, 1.f, 90);
 }
 
 Canvas::~Canvas() {
@@ -48,6 +48,7 @@ void Canvas::resizeGL(int w, int h) {
 }
 void Canvas::paintGL() {
 	glClearColor(background.r, background.g, background.b, background.a);
+	glLineWidth(lineWidth);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
@@ -143,10 +144,11 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer) {
 
 	sendForegroundColor(foreground);
 	sendProjectMatrix();
-	sendRotateSceneMatrix(0.f, 0.f, 0.f, 1.f);
+	sendRotateSceneMatrix(sceneAngle, 0.f, 0.f, 1.f);
+	sendSceneScaleMatrix(scale);
 	sendTranslateMatrix(0.f, 0.f);
-	sendRotateElemMatrix(0.f, 0.f, 0.f, 1.f);
-	sendScaleMatrix(0.5f);
+	sendRotateElemMatrix(elementAngle, 0.f, 0.f, 1.f);
+	sendScaleElementMatrix(size);
 	
 	glDrawArrays(GL_LINE_LOOP, 0, el->getNumber());
 }
@@ -184,14 +186,26 @@ void Canvas::sendRotateElemMatrix(float angle, float x, float y, float z) {
 	matrix.rotate(angle, x, y, z);
 	glUniformMatrix4fv(rotationElementMatrix, 1, GL_FALSE, matrix.data());
 }
-void Canvas::sendScaleMatrix(float scale) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingMatrix");
+void Canvas::sendScaleElementMatrix(float scale) {
+	GLint scalingMatrix = glGetUniformLocation(program, "scalingElementMatrix");
 	QMatrix4x4 matrix;
 	matrix.scale(scale);
 	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
 }
-void Canvas::sendScaleMatrix(float x, float y, float z) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingMatrix");
+void Canvas::sendScaleElementMatrix(float x, float y, float z) {
+	GLint scalingMatrix = glGetUniformLocation(program, "scalingElementMatrix");
+	QMatrix4x4 matrix;
+	matrix.scale(x, y, z);
+	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
+}
+void Canvas::sendSceneScaleMatrix(float scale) {
+	GLint scalingMatrix = glGetUniformLocation(program, "scalingSceneMatrix");
+	QMatrix4x4 matrix;
+	matrix.scale(scale);
+	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
+}
+void Canvas::sendSceneScaleMatrix(float x, float y, float z) {
+	GLint scalingMatrix = glGetUniformLocation(program, "scalingSceneMatrix");
 	QMatrix4x4 matrix;
 	matrix.scale(x, y, z);
 	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
@@ -236,10 +250,25 @@ void Canvas::setBackgroundA(size_t i) {
 
 void Canvas::setSize(size_t i) {
 	size = float(i) / 100;
+	update();
+}
+void Canvas::setScale(size_t i) {
+	scale = float(i) / 100;
+	update();
 }
 void Canvas::setNumber(size_t i) {
-	number = float(i) / 100;
+	number = 2.f / i;
+	update();
 }
-void Canvas::setAngle(size_t i) {
-	angle = float(i) / 360;
+void Canvas::setElementAngle(size_t i) {
+	elementAngle = i;
+	update();
+}
+void Canvas::setSceneAngle(size_t i) {
+	sceneAngle = i;
+	update();
+}
+void Canvas::setLineWidth(size_t i) {
+	lineWidth = float(i) / 100;
+	update();
 }

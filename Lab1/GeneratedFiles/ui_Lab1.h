@@ -28,7 +28,7 @@ QT_BEGIN_NAMESPACE
 class Ui_Lab1Class
 {
 public:
-    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_3;
     QSplitter *splitter;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
@@ -37,12 +37,16 @@ public:
     QGroupBox *groupBox_4;
     QHBoxLayout *horizontalLayout_3;
     QGridLayout *gridLayout_3;
-    QSlider *Number;
+    QLabel *label_10;
     QSlider *Size;
     QLabel *label;
-    QLabel *label_10;
+    QSlider *Number;
+    QLabel *label_14;
+    QSlider *Width;
     QLabel *label_6;
-    QSlider *Angle;
+    QSlider *ElementAngle;
+    QLabel *label_8;
+    QSlider *SceneAngle;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox_2;
@@ -65,16 +69,19 @@ public:
     QSlider *FB;
     QLabel *label_7;
     QSlider *FA;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *label_9;
+    QSlider *Scale;
 
     void setupUi(QWidget *Lab1Class)
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(713, 533);
-        horizontalLayout_2 = new QHBoxLayout(Lab1Class);
-        horizontalLayout_2->setSpacing(6);
-        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        Lab1Class->resize(713, 755);
+        verticalLayout_3 = new QVBoxLayout(Lab1Class);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         splitter = new QSplitter(Lab1Class);
         splitter->setObjectName(QStringLiteral("splitter"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -111,42 +118,77 @@ public:
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setSpacing(6);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
+        label_10 = new QLabel(groupBox_4);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_10, 1, 0, 1, 1);
+
+        Size = new QSlider(groupBox_4);
+        Size->setObjectName(QStringLiteral("Size"));
+        Size->setMinimum(1);
+        Size->setValue(99);
+        Size->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(Size, 2, 1, 1, 1);
+
+        label = new QLabel(groupBox_4);
+        label->setObjectName(QStringLiteral("label"));
+        label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label, 2, 0, 1, 1);
+
         Number = new QSlider(groupBox_4);
         Number->setObjectName(QStringLiteral("Number"));
-        Number->setValue(99);
+        Number->setMinimum(1);
+        Number->setMaximum(15);
+        Number->setValue(15);
         Number->setOrientation(Qt::Horizontal);
 
         gridLayout_3->addWidget(Number, 1, 1, 1, 1);
 
-        Size = new QSlider(groupBox_4);
-        Size->setObjectName(QStringLiteral("Size"));
-        Size->setValue(99);
-        Size->setOrientation(Qt::Horizontal);
+        label_14 = new QLabel(groupBox_4);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_3->addWidget(Size, 0, 1, 1, 1);
+        gridLayout_3->addWidget(label_14, 0, 0, 1, 1);
 
-        label = new QLabel(groupBox_4);
-        label->setObjectName(QStringLiteral("label"));
+        Width = new QSlider(groupBox_4);
+        Width->setObjectName(QStringLiteral("Width"));
+        Width->setMinimum(50);
+        Width->setMaximum(500);
+        Width->setValue(100);
+        Width->setOrientation(Qt::Horizontal);
 
-        gridLayout_3->addWidget(label, 0, 0, 1, 1);
-
-        label_10 = new QLabel(groupBox_4);
-        label_10->setObjectName(QStringLiteral("label_10"));
-
-        gridLayout_3->addWidget(label_10, 1, 0, 1, 1);
+        gridLayout_3->addWidget(Width, 0, 1, 1, 1);
 
         label_6 = new QLabel(groupBox_4);
         label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_3->addWidget(label_6, 2, 0, 1, 1);
+        gridLayout_3->addWidget(label_6, 3, 0, 1, 1);
 
-        Angle = new QSlider(groupBox_4);
-        Angle->setObjectName(QStringLiteral("Angle"));
-        Angle->setMaximum(359);
-        Angle->setValue(359);
-        Angle->setOrientation(Qt::Horizontal);
+        ElementAngle = new QSlider(groupBox_4);
+        ElementAngle->setObjectName(QStringLiteral("ElementAngle"));
+        ElementAngle->setMaximum(360);
+        ElementAngle->setValue(359);
+        ElementAngle->setOrientation(Qt::Horizontal);
 
-        gridLayout_3->addWidget(Angle, 2, 1, 1, 1);
+        gridLayout_3->addWidget(ElementAngle, 3, 1, 1, 1);
+
+        label_8 = new QLabel(groupBox_4);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_8, 4, 0, 1, 1);
+
+        SceneAngle = new QSlider(groupBox_4);
+        SceneAngle->setObjectName(QStringLiteral("SceneAngle"));
+        SceneAngle->setMaximum(360);
+        SceneAngle->setValue(359);
+        SceneAngle->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(SceneAngle, 4, 1, 1, 1);
 
 
         horizontalLayout_3->addLayout(gridLayout_3);
@@ -286,8 +328,29 @@ public:
 
         splitter->addWidget(verticalLayoutWidget);
 
-        horizontalLayout_2->addWidget(splitter);
+        verticalLayout_3->addWidget(splitter);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        label_9 = new QLabel(Lab1Class);
+        label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout_2->addWidget(label_9);
+
+        Scale = new QSlider(Lab1Class);
+        Scale->setObjectName(QStringLiteral("Scale"));
+        Scale->setMinimum(1);
+        Scale->setValue(99);
+        Scale->setOrientation(Qt::Horizontal);
+
+        horizontalLayout_2->addWidget(Scale);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
+
+        verticalLayout_3->setStretch(0, 1);
 
         retranslateUi(Lab1Class);
 
@@ -298,9 +361,16 @@ public:
     {
         Lab1Class->setWindowTitle(QApplication::translate("Lab1Class", "Lab1", Q_NULLPTR));
         groupBox_4->setTitle(QApplication::translate("Lab1Class", "Placing", Q_NULLPTR));
-        label->setText(QApplication::translate("Lab1Class", "Size", Q_NULLPTR));
-        label_10->setText(QApplication::translate("Lab1Class", "Number", Q_NULLPTR));
-        label_6->setText(QApplication::translate("Lab1Class", "Angle", Q_NULLPTR));
+        label_10->setText(QApplication::translate("Lab1Class", "Elements\n"
+"Number", Q_NULLPTR));
+        label->setText(QApplication::translate("Lab1Class", "Element\n"
+"Size", Q_NULLPTR));
+        label_14->setText(QApplication::translate("Lab1Class", "Lines\n"
+"Width", Q_NULLPTR));
+        label_6->setText(QApplication::translate("Lab1Class", "Element\n"
+"Angle", Q_NULLPTR));
+        label_8->setText(QApplication::translate("Lab1Class", "Scene\n"
+"Angle", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("Lab1Class", "Colors", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("Lab1Class", "Background", Q_NULLPTR));
         label_11->setText(QApplication::translate("Lab1Class", "R", Q_NULLPTR));
@@ -311,6 +381,8 @@ public:
         label_4->setText(QApplication::translate("Lab1Class", "B", Q_NULLPTR));
         label_3->setText(QApplication::translate("Lab1Class", "G", Q_NULLPTR));
         label_7->setText(QApplication::translate("Lab1Class", "A", Q_NULLPTR));
+        label_9->setText(QApplication::translate("Lab1Class", "Scene\n"
+"scaling", Q_NULLPTR));
     } // retranslateUi
 
 };
