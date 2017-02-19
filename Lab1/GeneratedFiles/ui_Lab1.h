@@ -18,6 +18,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QVBoxLayout>
@@ -34,19 +35,26 @@ public:
     QHBoxLayout *horizontalLayout;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QGroupBox *groupBox_5;
+    QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout_6;
+    QRadioButton *centerButton;
+    QRadioButton *randomButton;
+    QRadioButton *circleButton;
+    QGridLayout *gridLayout_4;
+    QLabel *label_10;
+    QSlider *Number;
     QGroupBox *groupBox_4;
     QHBoxLayout *horizontalLayout_3;
     QGridLayout *gridLayout_3;
-    QLabel *label_10;
     QSlider *Size;
     QLabel *label;
-    QSlider *Number;
-    QLabel *label_14;
-    QSlider *Width;
     QLabel *label_6;
     QSlider *ElementAngle;
     QLabel *label_8;
     QSlider *SceneAngle;
+    QLabel *label_14;
+    QSlider *Width;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *groupBox_2;
@@ -77,7 +85,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(713, 755);
+        Lab1Class->resize(1068, 602);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -109,6 +117,57 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        groupBox_5 = new QGroupBox(verticalLayoutWidget);
+        groupBox_5->setObjectName(QStringLiteral("groupBox_5"));
+        verticalLayout_4 = new QVBoxLayout(groupBox_5);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        centerButton = new QRadioButton(groupBox_5);
+        centerButton->setObjectName(QStringLiteral("centerButton"));
+
+        horizontalLayout_6->addWidget(centerButton);
+
+        randomButton = new QRadioButton(groupBox_5);
+        randomButton->setObjectName(QStringLiteral("randomButton"));
+
+        horizontalLayout_6->addWidget(randomButton);
+
+        circleButton = new QRadioButton(groupBox_5);
+        circleButton->setObjectName(QStringLiteral("circleButton"));
+
+        horizontalLayout_6->addWidget(circleButton);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_6);
+
+        gridLayout_4 = new QGridLayout();
+        gridLayout_4->setSpacing(6);
+        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        label_10 = new QLabel(groupBox_5);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_4->addWidget(label_10, 0, 0, 1, 1);
+
+        Number = new QSlider(groupBox_5);
+        Number->setObjectName(QStringLiteral("Number"));
+        Number->setMinimum(0);
+        Number->setMaximum(25);
+        Number->setValue(25);
+        Number->setOrientation(Qt::Horizontal);
+
+        gridLayout_4->addWidget(Number, 0, 1, 1, 1);
+
+
+        verticalLayout_4->addLayout(gridLayout_4);
+
+
+        verticalLayout->addWidget(groupBox_5);
+
         groupBox_4 = new QGroupBox(verticalLayoutWidget);
         groupBox_4->setObjectName(QStringLiteral("groupBox_4"));
         horizontalLayout_3 = new QHBoxLayout(groupBox_4);
@@ -118,12 +177,6 @@ public:
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setSpacing(6);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        label_10 = new QLabel(groupBox_4);
-        label_10->setObjectName(QStringLiteral("label_10"));
-        label_10->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout_3->addWidget(label_10, 1, 0, 1, 1);
-
         Size = new QSlider(groupBox_4);
         Size->setObjectName(QStringLiteral("Size"));
         Size->setMinimum(1);
@@ -137,30 +190,6 @@ public:
         label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         gridLayout_3->addWidget(label, 2, 0, 1, 1);
-
-        Number = new QSlider(groupBox_4);
-        Number->setObjectName(QStringLiteral("Number"));
-        Number->setMinimum(1);
-        Number->setMaximum(15);
-        Number->setValue(15);
-        Number->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(Number, 1, 1, 1, 1);
-
-        label_14 = new QLabel(groupBox_4);
-        label_14->setObjectName(QStringLiteral("label_14"));
-        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout_3->addWidget(label_14, 0, 0, 1, 1);
-
-        Width = new QSlider(groupBox_4);
-        Width->setObjectName(QStringLiteral("Width"));
-        Width->setMinimum(50);
-        Width->setMaximum(500);
-        Width->setValue(100);
-        Width->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(Width, 0, 1, 1, 1);
 
         label_6 = new QLabel(groupBox_4);
         label_6->setObjectName(QStringLiteral("label_6"));
@@ -189,6 +218,21 @@ public:
         SceneAngle->setOrientation(Qt::Horizontal);
 
         gridLayout_3->addWidget(SceneAngle, 4, 1, 1, 1);
+
+        label_14 = new QLabel(groupBox_4);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_14, 1, 0, 1, 1);
+
+        Width = new QSlider(groupBox_4);
+        Width->setObjectName(QStringLiteral("Width"));
+        Width->setMinimum(50);
+        Width->setMaximum(500);
+        Width->setValue(100);
+        Width->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(Width, 1, 1, 1, 1);
 
 
         horizontalLayout_3->addLayout(gridLayout_3);
@@ -326,6 +370,9 @@ public:
 
         verticalLayout->addWidget(groupBox);
 
+        verticalLayout->setStretch(0, 1);
+        verticalLayout->setStretch(1, 2);
+        verticalLayout->setStretch(2, 2);
         splitter->addWidget(verticalLayoutWidget);
 
         verticalLayout_3->addWidget(splitter);
@@ -360,17 +407,21 @@ public:
     void retranslateUi(QWidget *Lab1Class)
     {
         Lab1Class->setWindowTitle(QApplication::translate("Lab1Class", "Lab1", Q_NULLPTR));
-        groupBox_4->setTitle(QApplication::translate("Lab1Class", "Placing", Q_NULLPTR));
+        groupBox_5->setTitle(QApplication::translate("Lab1Class", "Formation", Q_NULLPTR));
+        centerButton->setText(QApplication::translate("Lab1Class", "Centered", Q_NULLPTR));
+        randomButton->setText(QApplication::translate("Lab1Class", "Random", Q_NULLPTR));
+        circleButton->setText(QApplication::translate("Lab1Class", "Circle", Q_NULLPTR));
         label_10->setText(QApplication::translate("Lab1Class", "Elements\n"
 "Number", Q_NULLPTR));
+        groupBox_4->setTitle(QApplication::translate("Lab1Class", "Placing", Q_NULLPTR));
         label->setText(QApplication::translate("Lab1Class", "Element\n"
 "Size", Q_NULLPTR));
-        label_14->setText(QApplication::translate("Lab1Class", "Lines\n"
-"Width", Q_NULLPTR));
         label_6->setText(QApplication::translate("Lab1Class", "Element\n"
 "Angle", Q_NULLPTR));
         label_8->setText(QApplication::translate("Lab1Class", "Scene\n"
 "Angle", Q_NULLPTR));
+        label_14->setText(QApplication::translate("Lab1Class", "Lines\n"
+"Width", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("Lab1Class", "Colors", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("Lab1Class", "Background", Q_NULLPTR));
         label_11->setText(QApplication::translate("Lab1Class", "R", Q_NULLPTR));

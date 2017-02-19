@@ -4,6 +4,7 @@
 #include <qmatrix4x4.h>
 
 #include "SquareCircle.h"
+#include <CoordinatesHolder.hpp>
 
 struct Color {
 public:
@@ -26,12 +27,13 @@ class Canvas : public QOpenGLWidget, protected QOpenGLFunctions {
 
 private:
 	Color foreground, background;
-	float size, scale, number, lineWidth;
+	float size, scale, lineWidth;
 	int elementAngle, sceneAngle;
 
-	GLuint* buffers;
-	
+	GLuint* buffers;	
 	ComplexElement *element;
+
+	CoordinatesHolder coordinates;
 
 protected:
 	float aspectRatio;
@@ -56,9 +58,10 @@ protected:
 	virtual void sendElement(ComplexElement* el);
 
 	virtual void drawElements();
-	virtual void drawElement(SimpleElement* el, GLuint buffer);
-	virtual void drawElement(SimpleElement* el);
-	virtual void drawElement(ComplexElement* el);
+	virtual void drawElement(SimpleElement* el, GLuint buffer, float x = 0.f, float y = 0.f);
+	virtual void drawElement(SimpleElement* el, float x = 0.f, float y = 0.f);
+	virtual void drawElement(ComplexElement* el, float x = 0.f, float y = 0.f);
+	virtual void drawElement(ComplexElement* el, CoordinatesHolder c);
 
 	virtual void sendProjectMatrix();
 	virtual void sendRotateSceneMatrix(float angle, float x, float y, float z);
@@ -90,4 +93,9 @@ public slots :
 	void setElementAngle(size_t i);
 	void setSceneAngle(size_t i);
 	void setLineWidth(size_t i);
+
+	void randomSlot();
+	void circleSlot();
+	void csSlot();
+	void centerSlot();
 };

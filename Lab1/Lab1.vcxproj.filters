@@ -111,6 +111,9 @@
     <ClInclude Include="SquareCircle.h">
       <Filter>Elements\CustomElements</Filter>
     </ClInclude>
+    <ClInclude Include="CoordinatesHolder.hpp">
+      <Filter>Canvas</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl">

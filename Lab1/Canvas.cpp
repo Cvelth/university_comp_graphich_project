@@ -135,10 +135,10 @@ void Canvas::sendElement(ComplexElement *el) {
 }
 
 void Canvas::drawElements() {
-	drawElement(element);	
+	drawElement(element, coordinates);	
 }
 
-void Canvas::drawElement(SimpleElement *el, GLuint buffer) {
+void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 0, 0);
 
@@ -146,20 +146,25 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer) {
 	sendProjectMatrix();
 	sendRotateSceneMatrix(sceneAngle, 0.f, 0.f, 1.f);
 	sendSceneScaleMatrix(scale);
-	sendTranslateMatrix(0.f, 0.f);
+	sendTranslateMatrix(x, y);
 	sendRotateElemMatrix(elementAngle, 0.f, 0.f, 1.f);
 	sendScaleElementMatrix(size);
 	
 	glDrawArrays(GL_LINE_LOOP, 0, el->getNumber());
 }
-void Canvas::drawElement(SimpleElement *el) {
-	drawElement(el, buffers[0]);
+void Canvas::drawElement(SimpleElement *el, float x, float y) {
+	drawElement(el, buffers[0], x, y);
 }
 
-void Canvas::drawElement(ComplexElement * el) {
+void Canvas::drawElement(ComplexElement * el, float x, float y) {
 	size_t i = 0;
 	for (auto se : **el)
-		drawElement(&se, buffers[i++]);
+		drawElement(&se, buffers[i++], x, y);
+}
+
+void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
+	for (auto p : *c)
+		drawElement(el, p.x(), p.y());
 }
 
 void Canvas::sendProjectMatrix() {
@@ -256,10 +261,6 @@ void Canvas::setScale(size_t i) {
 	scale = float(i) / 100;
 	update();
 }
-void Canvas::setNumber(size_t i) {
-	number = 2.f / i;
-	update();
-}
 void Canvas::setElementAngle(size_t i) {
 	elementAngle = i;
 	update();
@@ -270,5 +271,26 @@ void Canvas::setSceneAngle(size_t i) {
 }
 void Canvas::setLineWidth(size_t i) {
 	lineWidth = float(i) / 100;
+	update();
+}
+
+void Canvas::setNumber(size_t i) {
+	coordinates.setN(i);
+	update();
+}
+void Canvas::randomSlot() {
+	coordinates.setRandom();
+	update();
+}
+void Canvas::circleSlot() {
+	coordinates.setCircle();
+	update();
+}
+void Canvas::csSlot() {
+	coordinates.setSquaredCircle();
+	update();
+}
+void Canvas::centerSlot() {
+	coordinates.setCenter();
 	update();
 }

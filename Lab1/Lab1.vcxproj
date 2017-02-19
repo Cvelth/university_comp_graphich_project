@@ -119,6 +119,7 @@
     <ClInclude Include="AbstractElement.hpp" />
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="ComplexElement.hpp" />
+    <ClInclude Include="CoordinatesHolder.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="SimpleElement.hpp" />
     <ClInclude Include="Square.hpp" />
