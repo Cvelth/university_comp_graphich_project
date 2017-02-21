@@ -23,11 +23,20 @@ Lab1::Lab1(QWidget *parent)
 	ui.ElementAngle->setValue(0);
 	ui.SceneAngle->setValue(0);
 	ui.Number->setValue(1);
-	ui.Size->setValue(75);
-	ui.Scale->setValue(75);
-	ui.Width->setValue(250);
+	ui.Size->setValue(750);
+	ui.Scale->setValue(1500);
+	ui.Width->setValue(200);
+
+	ui.Speed->setValue(0);
 
 	ui.centerButton->click();
+
+	a = new AnimationHolder(&ui);
+}
+
+Lab1::~Lab1() {
+	delete c;
+	delete a;
 }
 
 void Lab1::connectGUI() {

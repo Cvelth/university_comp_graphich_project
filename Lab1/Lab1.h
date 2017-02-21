@@ -1,7 +1,8 @@
 #pragma once
-#include <QtWidgets/QWidget>
+#include <QtWidgets>
 #include "ui_Lab1.h"
 #include "Canvas.hpp"
+#include "AnimationHolder.hpp"
 
 class Lab1 : public QWidget
 {
@@ -9,6 +10,7 @@ class Lab1 : public QWidget
 
 public:
 	Lab1(QWidget *parent = Q_NULLPTR);
+	~Lab1();
 
 protected:
 	void connectGUI();
@@ -16,4 +18,5 @@ protected:
 private:
 	Ui::Lab1Class ui;
 	Canvas *c;
+	AnimationHolder *a;
 };

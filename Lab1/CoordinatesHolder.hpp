@@ -34,14 +34,16 @@ public:
 		std::mt19937_64 g(std::random_device().operator()());
 		std::uniform_real_distribution<float> d(-1.f, 1.f);
 		for (size_t i = 0; i < n; i++)
-			m_coords.push_back(Point(d(g), d(g)));		
+			m_coords.push_back(Point(d(g), d(g)));	
 	}
 	void setCircle() {
 		str = Circle;
 		m_coords.clear();
-		float STEP = PI / n * 2;
-		for (float f = 0.f; f < PI * 2; f += STEP)
+		float STEP = PI * 2.f / n;
+		for (float f = 0.f; f < PI * 2.f; f += STEP)
 			m_coords.push_back(Point(cosf(f), sinf(f)));
+		while (m_coords.size() > n)
+			m_coords.pop_back();
 	}
 	void setSquaredCircle() {
 		str = SquaredCircle;

@@ -254,11 +254,11 @@ void Canvas::setBackgroundA(size_t i) {
 }
 
 void Canvas::setSize(size_t i) {
-	size = float(i) / 100;
+	size = float(i) / 1000;
 	update();
 }
 void Canvas::setScale(size_t i) {
-	scale = float(i) / 100;
+	scale = float(i) / 2000;
 	update();
 }
 void Canvas::setElementAngle(size_t i) {

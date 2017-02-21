@@ -42,6 +42,9 @@
     <Filter Include="Elements\CustomElements">
       <UniqueIdentifier>{8a332b78-6c95-434d-af89-415ef4f1861a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{5eedca37-d2a5-4a52-ae3f-409c87d11d80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_Lab1.cpp">
@@ -71,6 +74,21 @@
     <ClCompile Include="Point.cpp">
       <Filter>Elements\Points</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Timer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Timer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AnimationHolder.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AnimationHolder.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Lab1.ui">
@@ -84,6 +102,12 @@
     </CustomBuild>
     <CustomBuild Include="Canvas.hpp">
       <Filter>Canvas</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Timer.hpp">
+      <Filter>Timer</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AnimationHolder.hpp">
+      <Filter>Timer</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
