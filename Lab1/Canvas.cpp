@@ -122,6 +122,7 @@ void Canvas::sendElement(SimpleElement *el, GLuint buffer) {
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * el->getSize(),
 				 res, GL_DYNAMIC_DRAW);
+	delete[] res;
 }
 
 void Canvas::sendElement(SimpleElement *el) {
