@@ -30,6 +30,7 @@ private:
 	Ui::Lab1Class *ui;
 	Data number, width, size, eAngle, sAngle, scale;
 	Data BR, BG, BB, FR, FG, FB, FA;
+	Data PA, PB, PR, PN;
 
 	Timer *t;
 
@@ -55,6 +56,11 @@ public:
 		FG = Data(ui->FG->value(), TYPICAL_Q, ui->FG->maximum(), ui->FG->minimum());
 		FB = Data(ui->FB->value(), TYPICAL_Q, ui->FB->maximum(), ui->FB->minimum());
 		FA = Data(ui->FA->value(), TYPICAL_Q, ui->FA->maximum(), ui->FA->minimum());
+
+		PA = Data(ui->PA->value(), TYPICAL_Q, ui->PA->maximum(), ui->PA->minimum());
+		PB = Data(ui->PB->value(), TYPICAL_Q, ui->PB->maximum(), ui->PB->minimum());
+		PR = Data(ui->PR->value(), TYPICAL_Q, ui->PR->maximum(), ui->PR->minimum());
+		PN = Data(ui->PN->value(), TYPICAL_Q / 10.f, ui->PN->maximum(), ui->PN->minimum());
 	};
 
 public slots:
@@ -86,5 +92,14 @@ public slots:
 			ui->FB->setValue(FB.step(speed));
 		if (ui->addFA->isChecked())
 			ui->FA->setValue(FA.step(speed));
+
+		if (ui->addPA->isChecked())
+			ui->PA->setValue(PA.step(speed));
+		if (ui->addPB->isChecked())
+			ui->PB->setValue(PB.step(speed));
+		if (ui->addPR->isChecked())
+			ui->PR->setValue(PR.step(speed));
+		if (ui->addPN->isChecked())
+			ui->PN->setValue(PN.step(speed));
 	}
 };

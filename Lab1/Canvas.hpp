@@ -2,8 +2,7 @@
 #include <qopenglfunctions.h>
 #include <qopenglwidget.h>
 #include <qmatrix4x4.h>
-
-#include "SquareCircle.h"
+#include "ComplexElement.hpp"
 #include <CoordinatesHolder.hpp>
 
 struct Color {
@@ -78,6 +77,9 @@ public:
 	virtual ~Canvas();
 
 public slots :
+	void createSquareCircle();
+	void createLab2Primitive(float a, float b, float r, size_t n);
+
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);
 	void setForegroundB(size_t i);

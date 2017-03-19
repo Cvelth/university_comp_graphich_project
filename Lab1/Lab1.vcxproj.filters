@@ -138,6 +138,9 @@
     <ClInclude Include="CoordinatesHolder.hpp">
       <Filter>Canvas</Filter>
     </ClInclude>
+    <ClInclude Include="Lab2Primitive.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl">

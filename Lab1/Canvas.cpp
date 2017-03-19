@@ -1,16 +1,15 @@
 #include "Canvas.hpp"
 #include <fstream>
+#include "Lab2Primitive.hpp"
+#include "SquareCircle.h"
 
-Canvas::Canvas() : foreground(1.f), background(1.f) {
+Canvas::Canvas() : foreground(1.f), background(1.f), element (nullptr) {
 	buffers = new GLuint[1];
-	//element = new ComplexElement(Circle(0.f, 0.f, 0.5f));
-	//element = new ComplexElement(Square(0.f, 0.f, 0.5f, 0.5f));
-	element = new SquareCircle(0.f, 0.f, 1.f, 90);
 }
 
 Canvas::~Canvas() {
-	delete[] buffers;
-	delete element;
+	if (buffers) delete[] buffers;
+	if (element) delete element;
 }
 
 void Canvas::initializeGL() {
@@ -33,7 +32,7 @@ void Canvas::initializeGL() {
 
 	glEnableVertexAttribArray(0);
 
-	sendData();
+	createSquareCircle();
 }
 void Canvas::resizeGL(int w, int h) {
 	aspectRatio = float(w) / h;
@@ -70,15 +69,24 @@ void Canvas::linkPrograms() {
 GLuint Canvas::makeProgram(std::initializer_list<GLuint> shaders) {
 	GLuint program = glCreateProgram();
 
-	for (auto shader : shaders)
+	for (auto &shader : shaders)
 		glAttachShader(program, shader);
 
 	glLinkProgram(program);
 
-	GLint status;
-	glGetProgramiv(program, GL_LINK_STATUS, &status);
-	if (!status)
+	GLint isLinked;
+	glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
+	if (!isLinked) {
+		GLsizei len;
+		glGetShaderiv(program, GL_INFO_LOG_LENGTH, &len);
+
+		GLchar* log = new GLchar[len + 1];
+		glGetProgramInfoLog(program, len, &len, log);
+		std::string t = std::string(log);
+		delete[] log;
+
 		throw CompilationOrLinkingError();
+	}
 
 	return program;
 }
@@ -91,10 +99,20 @@ GLuint Canvas::readShader(GLenum type, std::string fileName) {
 	glShaderSource(shader, 1, temp, 0);
 	glCompileShader(shader);
 
-	GLint status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-	if (!status)
+	GLint isCompiled;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+
+	if (!isCompiled) {
+		GLsizei len;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+
+		GLchar* log = new GLchar[len + 1];
+		glGetShaderInfoLog(shader, len, &len, log);
+		std::string t = std::string(log);
+		delete[] log;
+
 		throw CompilationOrLinkingError();
+	}
 
 	return shader;
 }
@@ -141,7 +159,7 @@ void Canvas::drawElements() {
 
 void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 0, 0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
 	sendForegroundColor(foreground);
 	sendProjectMatrix();
@@ -159,6 +177,7 @@ void Canvas::drawElement(SimpleElement *el, float x, float y) {
 
 void Canvas::drawElement(ComplexElement * el, float x, float y) {
 	size_t i = 0;
+	if (el)
 	for (auto se : **el)
 		drawElement(&se, buffers[i++], x, y);
 }
@@ -219,6 +238,19 @@ void Canvas::sendSceneScaleMatrix(float x, float y, float z) {
 void Canvas::sendForegroundColor(Color c) {
 	GLint drawingColor = glGetUniformLocation(program, "drawingColor");
 	glUniform4f(drawingColor, c.r, c.g, c.b, c.a);
+}
+
+void Canvas::createSquareCircle() {
+	if (element) delete element;
+	element = new SquareCircle(0.f, 0.f, 1.f, 90);
+	sendData();
+	update();
+}
+void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
+	if (element) delete element;
+	element = new Lab2Primitive(a, b, r, n);
+	sendData();
+	update();
 }
 
 void Canvas::setForegroundR(size_t i) {

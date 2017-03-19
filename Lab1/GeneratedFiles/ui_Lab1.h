@@ -36,6 +36,24 @@ public:
     QHBoxLayout *horizontalLayout;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QGroupBox *groupBox_7;
+    QVBoxLayout *verticalLayout_6;
+    QHBoxLayout *horizontalLayout_8;
+    QRadioButton *lab1;
+    QRadioButton *lab2;
+    QGridLayout *gridLayout_6;
+    QSlider *PB;
+    QLabel *lPA;
+    QLabel *lPR;
+    QSlider *PR;
+    QSlider *PN;
+    QLabel *lPN;
+    QSlider *PA;
+    QLabel *lPB;
+    QPushButton *addPA;
+    QPushButton *addPB;
+    QPushButton *addPR;
+    QPushButton *addPN;
     QGroupBox *groupBox_6;
     QVBoxLayout *verticalLayout_5;
     QHBoxLayout *horizontalLayout_7;
@@ -105,7 +123,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(713, 785);
+        Lab1Class->resize(742, 881);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -137,6 +155,119 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        groupBox_7 = new QGroupBox(verticalLayoutWidget);
+        groupBox_7->setObjectName(QStringLiteral("groupBox_7"));
+        verticalLayout_6 = new QVBoxLayout(groupBox_7);
+        verticalLayout_6->setSpacing(6);
+        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        lab1 = new QRadioButton(groupBox_7);
+        lab1->setObjectName(QStringLiteral("lab1"));
+        lab1->setChecked(true);
+
+        horizontalLayout_8->addWidget(lab1);
+
+        lab2 = new QRadioButton(groupBox_7);
+        lab2->setObjectName(QStringLiteral("lab2"));
+        lab2->setChecked(false);
+
+        horizontalLayout_8->addWidget(lab2);
+
+
+        verticalLayout_6->addLayout(horizontalLayout_8);
+
+        gridLayout_6 = new QGridLayout();
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        PB = new QSlider(groupBox_7);
+        PB->setObjectName(QStringLiteral("PB"));
+        PB->setMinimum(1);
+        PB->setMaximum(1000);
+        PB->setValue(300);
+        PB->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(PB, 1, 1, 1, 1);
+
+        lPA = new QLabel(groupBox_7);
+        lPA->setObjectName(QStringLiteral("lPA"));
+
+        gridLayout_6->addWidget(lPA, 0, 0, 1, 1);
+
+        lPR = new QLabel(groupBox_7);
+        lPR->setObjectName(QStringLiteral("lPR"));
+
+        gridLayout_6->addWidget(lPR, 2, 0, 1, 1);
+
+        PR = new QSlider(groupBox_7);
+        PR->setObjectName(QStringLiteral("PR"));
+        PR->setMinimum(1);
+        PR->setMaximum(100);
+        PR->setValue(50);
+        PR->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(PR, 2, 1, 1, 1);
+
+        PN = new QSlider(groupBox_7);
+        PN->setObjectName(QStringLiteral("PN"));
+        PN->setMinimum(1);
+        PN->setMaximum(15);
+        PN->setValue(1);
+        PN->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(PN, 3, 1, 1, 1);
+
+        lPN = new QLabel(groupBox_7);
+        lPN->setObjectName(QStringLiteral("lPN"));
+
+        gridLayout_6->addWidget(lPN, 3, 0, 1, 1);
+
+        PA = new QSlider(groupBox_7);
+        PA->setObjectName(QStringLiteral("PA"));
+        PA->setMinimum(1);
+        PA->setMaximum(1000);
+        PA->setValue(300);
+        PA->setOrientation(Qt::Horizontal);
+
+        gridLayout_6->addWidget(PA, 0, 1, 1, 1);
+
+        lPB = new QLabel(groupBox_7);
+        lPB->setObjectName(QStringLiteral("lPB"));
+
+        gridLayout_6->addWidget(lPB, 1, 0, 1, 1);
+
+        addPA = new QPushButton(groupBox_7);
+        addPA->setObjectName(QStringLiteral("addPA"));
+        addPA->setCheckable(true);
+
+        gridLayout_6->addWidget(addPA, 0, 2, 1, 1);
+
+        addPB = new QPushButton(groupBox_7);
+        addPB->setObjectName(QStringLiteral("addPB"));
+        addPB->setCheckable(true);
+
+        gridLayout_6->addWidget(addPB, 1, 2, 1, 1);
+
+        addPR = new QPushButton(groupBox_7);
+        addPR->setObjectName(QStringLiteral("addPR"));
+        addPR->setCheckable(true);
+
+        gridLayout_6->addWidget(addPR, 2, 2, 1, 1);
+
+        addPN = new QPushButton(groupBox_7);
+        addPN->setObjectName(QStringLiteral("addPN"));
+        addPN->setCheckable(true);
+
+        gridLayout_6->addWidget(addPN, 3, 2, 1, 1);
+
+
+        verticalLayout_6->addLayout(gridLayout_6);
+
+
+        verticalLayout->addWidget(groupBox_7);
+
         groupBox_6 = new QGroupBox(verticalLayoutWidget);
         groupBox_6->setObjectName(QStringLiteral("groupBox_6"));
         verticalLayout_5 = new QVBoxLayout(groupBox_6);
@@ -499,10 +630,10 @@ public:
 
         verticalLayout->addWidget(groupBox);
 
-        verticalLayout->setStretch(0, 1);
         verticalLayout->setStretch(1, 1);
-        verticalLayout->setStretch(2, 2);
+        verticalLayout->setStretch(2, 1);
         verticalLayout->setStretch(3, 2);
+        verticalLayout->setStretch(4, 2);
         splitter->addWidget(verticalLayoutWidget);
 
         verticalLayout_3->addWidget(splitter);
@@ -544,6 +675,17 @@ public:
     void retranslateUi(QWidget *Lab1Class)
     {
         Lab1Class->setWindowTitle(QApplication::translate("Lab1Class", "Lab1", Q_NULLPTR));
+        groupBox_7->setTitle(QApplication::translate("Lab1Class", "Lab", Q_NULLPTR));
+        lab1->setText(QApplication::translate("Lab1Class", "Lab 1", Q_NULLPTR));
+        lab2->setText(QApplication::translate("Lab1Class", "Lab 2", Q_NULLPTR));
+        lPA->setText(QApplication::translate("Lab1Class", "A", Q_NULLPTR));
+        lPR->setText(QApplication::translate("Lab1Class", "R", Q_NULLPTR));
+        lPN->setText(QApplication::translate("Lab1Class", "N", Q_NULLPTR));
+        lPB->setText(QApplication::translate("Lab1Class", "B", Q_NULLPTR));
+        addPA->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        addPB->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        addPR->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        addPN->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         groupBox_6->setTitle(QApplication::translate("Lab1Class", "Timer", Q_NULLPTR));
         label_15->setText(QApplication::translate("Lab1Class", "Timer\n"
 "speed", Q_NULLPTR));

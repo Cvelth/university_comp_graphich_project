@@ -3,7 +3,7 @@
 #include <qlist.h>
 #include <random>
 
-enum Structure { Center, Random, Circle, SquaredCircle };
+enum class Structure { Center, Random, Circle, SquaredCircle };
 
 class CoordinatesHolder {
 private:
@@ -16,20 +16,20 @@ public:
 	void setN(size_t N) { 
 		n = N;
 		switch (str) {
-			case Center: setCenter(); break;
-			case Random: setRandom(); break;
-			case Circle: setCircle(); break;
-			case SquaredCircle: setSquaredCircle();
+			case Structure::Center: setCenter(); break;
+			case Structure::Random: setRandom(); break;
+			case Structure::Circle: setCircle(); break;
+			case Structure::SquaredCircle: setSquaredCircle();
 		}
 	}
 	void setCenter() {
-		str = Center;
+		str = Structure::Center;
 		m_coords.clear();
 		for (int i = 0; i < n; i++)
 			m_coords.push_back(Point());
 	}
 	void setRandom() {
-		str = Random;
+		str = Structure::Random;
 		m_coords.clear();
 		std::mt19937_64 g(std::random_device().operator()());
 		std::uniform_real_distribution<float> d(-1.f, 1.f);
@@ -37,7 +37,7 @@ public:
 			m_coords.push_back(Point(d(g), d(g)));	
 	}
 	void setCircle() {
-		str = Circle;
+		str = Structure::Circle;
 		m_coords.clear();
 		float STEP = PI * 2.f / n;
 		for (float f = 0.f; f < PI * 2.f; f += STEP)
@@ -46,7 +46,7 @@ public:
 			m_coords.pop_back();
 	}
 	void setSquaredCircle() {
-		str = SquaredCircle;
+		str = Structure::SquaredCircle;
 		m_coords.clear();
 		size_t s = n / 8;
 		float step = 2.f / s;

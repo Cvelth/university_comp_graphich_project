@@ -19,4 +19,9 @@ private:
 	Ui::Lab1Class ui;
 	Canvas *c;
 	AnimationHolder *a;
+
+private slots:
+	void lab1Slot();
+	void lab2Slot();
+	void lab2pSlot();
 };
