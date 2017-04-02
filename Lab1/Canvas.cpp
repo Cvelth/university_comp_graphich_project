@@ -1,10 +1,13 @@
 #include "Canvas.hpp"
 #include <fstream>
 #include "Lab2Primitive.hpp"
+#include "Lab3Primitive.hpp"
 #include "SquareCircle.h"
+#include <qevent.h>
 
-Canvas::Canvas() : foreground(1.f), background(1.f), element (nullptr) {
+Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), isMouseLocked(false) {
 	buffers = new GLuint[1];
+	resetCamera();
 }
 
 Canvas::~Canvas() {
@@ -38,12 +41,15 @@ void Canvas::resizeGL(int w, int h) {
 	aspectRatio = float(w) / h;
 	glViewport(0, 0, w, h);
 	projection = QMatrix4x4();
+	/*
 	if (aspectRatio > 1.f)
 		projection.ortho(-aspectRatio, +aspectRatio, 
 						 -1.f, +1.f, -1.f, +1.f);
 	else
 		projection.ortho(-1.f, +1.f, -1.f / aspectRatio, 
 						 +1.f / aspectRatio, -1.f, +1.f);
+						 */
+	projection.perspective(60, aspectRatio, 0.01f, 100.f);
 }
 void Canvas::paintGL() {
 	glClearColor(background.r, background.g, background.b, background.a);
@@ -52,6 +58,68 @@ void Canvas::paintGL() {
 
 	glUseProgram(program);
 	drawElements();
+}
+
+void Canvas::mousePressEvent(QMouseEvent * e) {
+	isMouseLocked = !isMouseLocked;
+	setMouseTracking(isMouseLocked);
+	if (isMouseLocked) {
+		QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
+		setCursor(Qt::BlankCursor);
+	} else
+		setCursor(Qt::ArrowCursor);
+}
+
+void Canvas::mouseMoveEvent(QMouseEvent * e) {
+	if (isMouseLocked) {
+		float x = e->x() - width() / 2;
+		float y = e->y() - height() / 2;
+		lookPoint += lookPoint * upVector * x / height();
+		lookPoint += upVector * lookPoint * Point(0, 0, 1) * y / height();
+		QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
+		update();
+	}
+}
+
+bool Canvas::eventFilter(QObject * obj, QEvent * event) {
+	if (event->type() == QEvent::KeyPress) {
+		switch (static_cast<QKeyEvent*>(event)->key()) {
+			case Qt::Key::Key_Up:
+			case Qt::Key::Key_W:
+				cameraPos += lookPoint * 0.2f;
+				break;
+			case Qt::Key::Key_Down:
+			case Qt::Key::Key_S:
+				cameraPos -= lookPoint * 0.2f;
+				break;
+			case Qt::Key::Key_Left:
+			case Qt::Key::Key_A:
+				cameraPos -= lookPoint * upVector * 0.2f;
+				break;
+			case Qt::Key::Key_Right:
+			case Qt::Key::Key_D:
+				cameraPos += lookPoint * upVector * 0.2f;
+				break;
+			case Qt::Key_Shift:
+			case Qt::Key::Key_E:
+				cameraPos += upVector * 0.2f;
+				break;
+			case Qt::Key_Control:
+			case Qt::Key::Key_Q:
+				cameraPos -= upVector * 0.2f;
+				break;
+		}
+		update();
+		return true;
+	} else if (event->type() == QEvent::Wheel && isMouseLocked) {
+		if (static_cast<QWheelEvent*>(event)->delta() < 0)
+			cameraPos -= lookPoint * 0.1f;
+		else
+			cameraPos += lookPoint * 0.1f;
+		update();
+		return true;
+	}
+	return QObject::eventFilter(obj, event);
 }
 
 GLuint* Canvas::generateBuffers(size_t n) {
@@ -136,6 +204,7 @@ void Canvas::sendElement(SimpleElement *el, GLuint buffer) {
 	for (Point p : **el) {
 		res[i++] = p.x();
 		res[i++] = p.y();
+		res[i++] = p.z();
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * el->getSize(),
@@ -159,10 +228,11 @@ void Canvas::drawElements() {
 
 void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
 	sendForegroundColor(foreground);
 	sendProjectMatrix();
+	sendLookAtMatrix();
 	sendRotateSceneMatrix(sceneAngle, 0.f, 0.f, 1.f);
 	sendSceneScaleMatrix(scale);
 	sendTranslateMatrix(x, y);
@@ -177,8 +247,7 @@ void Canvas::drawElement(SimpleElement *el, float x, float y) {
 
 void Canvas::drawElement(ComplexElement * el, float x, float y) {
 	size_t i = 0;
-	if (el)
-	for (auto se : **el)
+	if (el) for (auto se : **el)
 		drawElement(&se, buffers[i++], x, y);
 }
 
@@ -187,10 +256,25 @@ void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
 		drawElement(el, p.x(), p.y());
 }
 
+QVector3D operator!(const Point& p) {
+	return QVector3D(p.x(), p.y(), p.z());
+}
+
 void Canvas::sendProjectMatrix() {
 	GLint projectionMatrix = glGetUniformLocation(program, "projectionMatrix");
 	glUniformMatrix4fv(projectionMatrix, 1, GL_FALSE, projection.data());
 
+}
+void Canvas::sendLookAtMatrix() {
+	GLint lookAtMatrix = glGetUniformLocation(program, "lookAtMatrix");
+	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
+	glUniformMatrix4fv(lookAtMatrix, 1, GL_FALSE, m.data());
+
+	GLint camera = glGetUniformLocation(program, "camera");
+	glUniform3f(camera, cameraPos.x(), cameraPos.y(), cameraPos.z());
+
+	GLint back = glGetUniformLocation(program, "background");
+	glUniform3f(back, background.r, background.g, background.b);
 }
 void Canvas::sendRotateSceneMatrix(float angle, float x, float y, float z) {
 	GLint rotationSceneMatrix = glGetUniformLocation(program, "rotationSceneMatrix");
@@ -249,6 +333,13 @@ void Canvas::createSquareCircle() {
 void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 	if (element) delete element;
 	element = new Lab2Primitive(a, b, r, n);
+	sendData();
+	update();
+}
+
+void Canvas::createLab3Primitive(size_t n) {
+	if (element) delete element;
+	element = new Lab3Primitive(n);
 	sendData();
 	update();
 }
@@ -325,5 +416,17 @@ void Canvas::csSlot() {
 }
 void Canvas::centerSlot() {
 	coordinates.setCenter();
+	update();
+}
+
+void Canvas::resetCamera() {
+	cameraPos = Point(0, 0, -2);
+	lookPoint = Point(0, 0, 1);
+	upVector = Point(0, 1, 0);
+	update();
+}
+
+void Canvas::lookAtNull() {
+	lookPoint = -cameraPos;
 	update();
 }

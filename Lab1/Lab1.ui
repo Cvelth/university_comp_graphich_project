@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>742</width>
-    <height>881</height>
+    <height>910</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -68,6 +68,16 @@
              <widget class="QRadioButton" name="lab2">
               <property name="text">
                <string>Lab 2</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="lab3">
+              <property name="text">
+               <string>Lab 3</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -500,7 +510,7 @@ Width</string>
          <property name="title">
           <string>Colors</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
           <item>
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
@@ -735,6 +745,20 @@ Width</string>
               </layout>
              </item>
             </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="lookAtNull">
+            <property name="text">
+             <string>Look at (0;0;0)</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetCamera">
+            <property name="text">
+             <string>Reset Camera</string>
+            </property>
            </widget>
           </item>
          </layout>

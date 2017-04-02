@@ -34,9 +34,15 @@ private:
 
 	CoordinatesHolder coordinates;
 
+	bool isMouseLocked;
+
 protected:
 	float aspectRatio;
 	QMatrix4x4 projection;
+
+	Point cameraPos;
+	Point lookPoint;
+	Point upVector;
 
 	GLuint program;
 
@@ -45,6 +51,10 @@ protected:
 	virtual void resizeGL(int w, int h) override;
 	virtual void paintGL() override;
 
+	virtual void mousePressEvent(QMouseEvent* e) override;
+	virtual void mouseMoveEvent(QMouseEvent* e) override;
+	virtual bool eventFilter(QObject *obj, QEvent *event) override;
+	
 	virtual GLuint* generateBuffers(size_t n);
 	virtual void linkPrograms();
 	GLuint makeProgram(std::initializer_list<GLuint> shaders);
@@ -63,6 +73,7 @@ protected:
 	virtual void drawElement(ComplexElement* el, CoordinatesHolder c);
 
 	virtual void sendProjectMatrix();
+	virtual void sendLookAtMatrix();
 	virtual void sendRotateSceneMatrix(float angle, float x, float y, float z);
 	virtual void sendTranslateMatrix(float x, float y);
 	virtual void sendRotateElemMatrix(float angle, float x, float y, float z);
@@ -79,6 +90,7 @@ public:
 public slots :
 	void createSquareCircle();
 	void createLab2Primitive(float a, float b, float r, size_t n);
+	void createLab3Primitive(size_t n);
 
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);
@@ -100,4 +112,7 @@ public slots :
 	void circleSlot();
 	void csSlot();
 	void centerSlot();
+
+	void resetCamera();
+	void lookAtNull();
 };

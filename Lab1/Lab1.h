@@ -21,7 +21,8 @@ private:
 	AnimationHolder *a;
 
 private slots:
+	void eventSlot();
 	void lab1Slot();
 	void lab2Slot();
-	void lab2pSlot();
+	void lab3Slot();
 };

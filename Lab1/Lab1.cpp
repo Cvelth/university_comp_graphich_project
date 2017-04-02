@@ -7,6 +7,7 @@ Lab1::Lab1(QWidget *parent)
 
 	c = new Canvas();
 	connectGUI();
+	installEventFilter(c);
 
 	ui.horizontalLayout->addWidget(c);
 	ui.splitter->setStretchFactor(0, 4);
@@ -48,11 +49,12 @@ Lab1::~Lab1() {
 void Lab1::connectGUI() {
 	connect(ui.lab1, &QRadioButton::clicked, this, &Lab1::lab1Slot);
 	connect(ui.lab2, &QRadioButton::clicked, this, &Lab1::lab2Slot);
+	connect(ui.lab3, &QRadioButton::clicked, this, &Lab1::lab3Slot);
 
-	connect(ui.PA, &QSlider::valueChanged, this, &Lab1::lab2pSlot);
-	connect(ui.PB, &QSlider::valueChanged, this, &Lab1::lab2pSlot);
-	connect(ui.PR, &QSlider::valueChanged, this, &Lab1::lab2pSlot);
-	connect(ui.PN, &QSlider::valueChanged, this, &Lab1::lab2pSlot);
+	connect(ui.PA, &QSlider::valueChanged, this, &Lab1::eventSlot);
+	connect(ui.PB, &QSlider::valueChanged, this, &Lab1::eventSlot);
+	connect(ui.PR, &QSlider::valueChanged, this, &Lab1::eventSlot);
+	connect(ui.PN, &QSlider::valueChanged, this, &Lab1::eventSlot);
 
 	connect(ui.BR, &QSlider::valueChanged, c, &Canvas::setBackgroundR);
 	connect(ui.BG, &QSlider::valueChanged, c, &Canvas::setBackgroundG);
@@ -73,6 +75,9 @@ void Lab1::connectGUI() {
 	connect(ui.randomButton, &QRadioButton::clicked, c, &Canvas::randomSlot);
 	connect(ui.circleButton, &QRadioButton::clicked, c, &Canvas::circleSlot);
 	connect(ui.centerButton, &QRadioButton::clicked, c, &Canvas::centerSlot);
+
+	connect(ui.resetCamera, &QPushButton::clicked, c, &Canvas::resetCamera);
+	connect(ui.lookAtNull, &QPushButton::clicked, c, &Canvas::lookAtNull);
 }
 
 void Lab1::lab1Slot() {
@@ -110,12 +115,38 @@ void Lab1::lab2Slot() {
 	ui.addPR->show();
 	ui.addPN->show();
 
-	lab2pSlot();
+	eventSlot();
 }
 
-void Lab1::lab2pSlot() {
-	c->createLab2Primitive(float(ui.PA->value()) / 100.f,
-						   float(ui.PB->value()) / 100.f,
-						   float(ui.PR->value()) / 100.f,
-						   ui.PN->value());
+void Lab1::lab3Slot() {
+	ui.lPA->hide();
+	ui.lPB->hide();
+	ui.lPR->hide();
+	ui.lPN->show();
+
+	ui.PA->hide();
+	ui.PB->hide();
+	ui.PR->hide();
+	ui.PN->show();
+
+	ui.addPA->hide();
+	ui.addPB->hide();
+	ui.addPR->hide();
+	ui.addPN->show();
+
+	eventSlot();
+}
+
+void Lab1::eventSlot() {
+	if (ui.lab1->isChecked()) {
+		//Nothing to do.
+		//Lab1 primitive is static.
+	} else if (ui.lab2->isChecked()) {
+		c->createLab2Primitive(float(ui.PA->value()) / 100.f,
+							   float(ui.PB->value()) / 100.f,
+							   float(ui.PR->value()) / 100.f,
+							   ui.PN->value());
+	} else if (ui.lab3->isChecked()) {
+		c->createLab3Primitive(ui.PN->value() * 2);
+	}
 }

@@ -41,6 +41,7 @@ public:
     QHBoxLayout *horizontalLayout_8;
     QRadioButton *lab1;
     QRadioButton *lab2;
+    QRadioButton *lab3;
     QGridLayout *gridLayout_6;
     QSlider *PB;
     QLabel *lPA;
@@ -114,6 +115,8 @@ public:
     QPushButton *addFG;
     QPushButton *addFB;
     QPushButton *addFA;
+    QPushButton *lookAtNull;
+    QPushButton *resetCamera;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_9;
     QSlider *Scale;
@@ -123,7 +126,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(742, 881);
+        Lab1Class->resize(742, 910);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -175,6 +178,12 @@ public:
         lab2->setChecked(false);
 
         horizontalLayout_8->addWidget(lab2);
+
+        lab3 = new QRadioButton(groupBox_7);
+        lab3->setObjectName(QStringLiteral("lab3"));
+        lab3->setChecked(false);
+
+        horizontalLayout_8->addWidget(lab3);
 
 
         verticalLayout_6->addLayout(horizontalLayout_8);
@@ -627,6 +636,16 @@ public:
 
         verticalLayout_2->addWidget(groupBox_3);
 
+        lookAtNull = new QPushButton(groupBox);
+        lookAtNull->setObjectName(QStringLiteral("lookAtNull"));
+
+        verticalLayout_2->addWidget(lookAtNull);
+
+        resetCamera = new QPushButton(groupBox);
+        resetCamera->setObjectName(QStringLiteral("resetCamera"));
+
+        verticalLayout_2->addWidget(resetCamera);
+
 
         verticalLayout->addWidget(groupBox);
 
@@ -678,6 +697,7 @@ public:
         groupBox_7->setTitle(QApplication::translate("Lab1Class", "Lab", Q_NULLPTR));
         lab1->setText(QApplication::translate("Lab1Class", "Lab 1", Q_NULLPTR));
         lab2->setText(QApplication::translate("Lab1Class", "Lab 2", Q_NULLPTR));
+        lab3->setText(QApplication::translate("Lab1Class", "Lab 3", Q_NULLPTR));
         lPA->setText(QApplication::translate("Lab1Class", "A", Q_NULLPTR));
         lPR->setText(QApplication::translate("Lab1Class", "R", Q_NULLPTR));
         lPN->setText(QApplication::translate("Lab1Class", "N", Q_NULLPTR));
@@ -727,6 +747,8 @@ public:
         addFG->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         addFB->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         addFA->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        lookAtNull->setText(QApplication::translate("Lab1Class", "Look at (0;0;0)", Q_NULLPTR));
+        resetCamera->setText(QApplication::translate("Lab1Class", "Reset Camera", Q_NULLPTR));
         label_9->setText(QApplication::translate("Lab1Class", "Scene\n"
 "scaling", Q_NULLPTR));
         addScale->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
