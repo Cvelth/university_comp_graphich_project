@@ -1,8 +1,8 @@
 #version 430
 
-attribute layout(location=0) vec3 position;
+in layout(location=0) vec3 position;
 
-varying vec4 theColor;
+out vec4 theColor;
 
 uniform vec4 drawingColor;
 uniform mat4 translationMatrix;
@@ -20,9 +20,9 @@ void main() {
 	gl_Position = projectionMatrix * lookAtMatrix * rotationSceneMatrix * scalingSceneMatrix 
 				* translationMatrix * rotationElementMatrix * scalingElementMatrix 
 				* vec4(position, 1.0);
-	float t = length(gl_Position - camera);
-	if (t > 1)
-		theColor = drawingColor / t * 5 + background;
+	float t = length(gl_Position - vec4(camera, 0.0));
+	if (t > 5)
+		theColor = drawingColor / t * 5 + vec4(background, 0.0);
 	else
 		theColor = drawingColor;
 }
