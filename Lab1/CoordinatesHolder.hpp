@@ -3,7 +3,7 @@
 #include <qlist.h>
 #include <random>
 
-enum class Structure { Center, Random, Circle, SquaredCircle };
+enum class Structure { Center, Random, Circle };
 
 class CoordinatesHolder {
 private:
@@ -19,7 +19,6 @@ public:
 			case Structure::Center: setCenter(); break;
 			case Structure::Random: setRandom(); break;
 			case Structure::Circle: setCircle(); break;
-			case Structure::SquaredCircle: setSquaredCircle();
 		}
 	}
 	void setCenter() {
@@ -44,23 +43,6 @@ public:
 			m_coords.push_back(Point(cosf(f), sinf(f)));
 		while (m_coords.size() > n)
 			m_coords.pop_back();
-	}
-	void setSquaredCircle() {
-		str = Structure::SquaredCircle;
-		m_coords.clear();
-		size_t s = n / 8;
-		float step = 2.f / s;
-		float start = -1.f;
-		float end = start + 2.f;
-		for (float f = start; f < end; f += step) {
-			m_coords.push_back(Point(f, -1.f));
-			m_coords.push_back(Point(f, +1.f));
-			m_coords.push_back(Point(-1.f, f));
-			m_coords.push_back(Point(+1.f, f));
-		}
-		step = PI / (n - s * 4) * 2;
-		for (float f = 0.f; f < PI * 2; f += step)
-			m_coords.push_back(Point(cosf(f), sinf(f)));
 	}
 
 	QList<Point>& operator*() {

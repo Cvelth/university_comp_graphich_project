@@ -19,6 +19,22 @@ public:
 	}
 };
 
+struct UniformLocations {
+	GLint
+		projectionMatrixLoc,
+
+		lookAtMatrixLoc,
+		cameraLoc,
+
+		translationMatrixLoc,
+		rotationSceneMatrixLoc,
+		rotationElementMatrixLoc,
+		scalingSceneMatrixLoc,
+		scalingElementMatrixLoc,
+
+		drawingColorLoc;
+};
+
 class CompilationOrLinkingError {};
 
 class Canvas : public QOpenGLWidget, protected QOpenGLFunctions {
@@ -26,20 +42,15 @@ class Canvas : public QOpenGLWidget, protected QOpenGLFunctions {
 
 private:
 	Color foreground, background;
-	float size, scale, lineWidth;
-	int elementAngle, sceneAngle;
 
-	GLuint* buffers;	
-	ComplexElement *element;
-
+	GLuint* buffers;
+	UniformLocations locs;
 	CoordinatesHolder coordinates;
-
+	ComplexElement *element;
+	
 	bool isMouseLocked;
-
+	
 protected:
-	float aspectRatio;
-	QMatrix4x4 projection;
-
 	Point cameraPos;
 	Point lookPoint;
 	Point upVector;
@@ -60,28 +71,17 @@ protected:
 	GLuint makeProgram(std::initializer_list<GLuint> shaders);
 	GLuint readShader(GLenum type, std::string fileName);
 	std::string readFile(std::string fileName);
+	UniformLocations getShaderUniformLocs();
 
 	virtual void sendData();
 	virtual void sendElement(SimpleElement* el);
 	virtual void sendElement(SimpleElement* el, GLuint buffer);
 	virtual void sendElement(ComplexElement* el);
 
-	virtual void drawElements();
 	virtual void drawElement(SimpleElement* el, GLuint buffer, float x = 0.f, float y = 0.f);
 	virtual void drawElement(SimpleElement* el, float x = 0.f, float y = 0.f);
 	virtual void drawElement(ComplexElement* el, float x = 0.f, float y = 0.f);
 	virtual void drawElement(ComplexElement* el, CoordinatesHolder c);
-
-	virtual void sendProjectMatrix();
-	virtual void sendLookAtMatrix();
-	virtual void sendRotateSceneMatrix(float angle, float x, float y, float z);
-	virtual void sendTranslateMatrix(float x, float y);
-	virtual void sendRotateElemMatrix(float angle, float x, float y, float z);
-	virtual void sendScaleElementMatrix(float scale);
-	virtual void sendScaleElementMatrix(float x, float y, float z);
-	virtual void sendSceneScaleMatrix(float scale);
-	virtual void sendSceneScaleMatrix(float x, float y, float z);
-	virtual void sendForegroundColor(Color c);
 
 public:
 	Canvas();
@@ -110,9 +110,12 @@ public slots :
 
 	void randomSlot();
 	void circleSlot();
-	void csSlot();
 	void centerSlot();
 
 	void resetCamera();
 	void lookAtNull();
+
+	void updateLookAt();
+	void updateForegroundColor();
+	void updateBackgroundColor();
 };

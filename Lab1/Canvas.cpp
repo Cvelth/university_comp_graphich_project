@@ -16,10 +16,8 @@ Canvas::~Canvas() {
 }
 
 void Canvas::initializeGL() {
-	initializeOpenGLFunctions();
+ 	initializeOpenGLFunctions();
 	linkPrograms();
-
-	glLineWidth(2.5f);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -38,26 +36,18 @@ void Canvas::initializeGL() {
 	createSquareCircle();
 }
 void Canvas::resizeGL(int w, int h) {
-	aspectRatio = float(w) / h;
 	glViewport(0, 0, w, h);
-	projection = QMatrix4x4();
-	/*
-	if (aspectRatio > 1.f)
-		projection.ortho(-aspectRatio, +aspectRatio, 
-						 -1.f, +1.f, -1.f, +1.f);
-	else
-		projection.ortho(-1.f, +1.f, -1.f / aspectRatio, 
-						 +1.f / aspectRatio, -1.f, +1.f);
-						 */
-	projection.perspective(60, aspectRatio, 0.01f, 100.f);
+	QMatrix4x4 projection;
+	projection.perspective(60, float(w) / h, 0.01f, 100.f);
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.projectionMatrixLoc, 1, GL_FALSE, projection.data());
+	updateLookAt();
 }
 void Canvas::paintGL() {
-	glClearColor(background.r, background.g, background.b, background.a);
-	glLineWidth(lineWidth);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
-	drawElements();
+	drawElement(element, coordinates);
 }
 
 void Canvas::mousePressEvent(QMouseEvent * e) {
@@ -77,7 +67,7 @@ void Canvas::mouseMoveEvent(QMouseEvent * e) {
 		lookPoint += lookPoint * upVector * x / height();
 		lookPoint += upVector * lookPoint * Point(0, 0, 1) * y / height();
 		QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
-		update();
+		updateLookAt();
 	}
 }
 
@@ -109,14 +99,14 @@ bool Canvas::eventFilter(QObject * obj, QEvent * event) {
 				cameraPos -= upVector * 0.2f;
 				break;
 		}
-		update();
+		updateLookAt();
 		return true;
 	} else if (event->type() == QEvent::Wheel && isMouseLocked) {
 		if (static_cast<QWheelEvent*>(event)->delta() < 0)
 			cameraPos -= lookPoint * 0.1f;
 		else
 			cameraPos += lookPoint * 0.1f;
-		update();
+		updateLookAt();
 		return true;
 	}
 	return QObject::eventFilter(obj, event);
@@ -133,6 +123,7 @@ void Canvas::linkPrograms() {
 	GLuint v = readShader(GL_VERTEX_SHADER, "VertexShader.glsl");
 
 	program = makeProgram({f, v});
+	locs = getShaderUniformLocs();
 }
 GLuint Canvas::makeProgram(std::initializer_list<GLuint> shaders) {
 	GLuint program = glCreateProgram();
@@ -191,6 +182,20 @@ std::string Canvas::readFile(std::string fileName) {
 	);
 }
 
+UniformLocations Canvas::getShaderUniformLocs() {
+	UniformLocations t_locs;
+	t_locs.projectionMatrixLoc = glGetUniformLocation(program, "projectionMatrix");
+	t_locs.lookAtMatrixLoc = glGetUniformLocation(program, "lookAtMatrix");
+	t_locs.cameraLoc = glGetUniformLocation(program, "camera");
+	t_locs.rotationSceneMatrixLoc = glGetUniformLocation(program, "rotationSceneMatrix");
+	t_locs.translationMatrixLoc = glGetUniformLocation(program, "translationMatrix");
+	t_locs.rotationElementMatrixLoc = glGetUniformLocation(program, "rotationElementMatrix");
+	t_locs.scalingElementMatrixLoc = glGetUniformLocation(program, "scalingElementMatrix");
+	t_locs.scalingSceneMatrixLoc = glGetUniformLocation(program, "scalingSceneMatrix");
+	t_locs.drawingColorLoc = glGetUniformLocation(program, "drawingColor");
+	return t_locs;
+}
+
 void Canvas::sendData() {
 	delete[] buffers;
 	buffers = generateBuffers(element->getElementsNumber());
@@ -222,22 +227,13 @@ void Canvas::sendElement(ComplexElement *el) {
 		sendElement(&se, buffers[i++]);
 }
 
-void Canvas::drawElements() {
-	drawElement(element, coordinates);	
-}
-
 void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
 
-	sendForegroundColor(foreground);
-	sendProjectMatrix();
-	sendLookAtMatrix();
-	sendRotateSceneMatrix(sceneAngle, 0.f, 0.f, 1.f);
-	sendSceneScaleMatrix(scale);
-	sendTranslateMatrix(x, y);
-	sendRotateElemMatrix(elementAngle, 0.f, 0.f, 1.f);
-	sendScaleElementMatrix(size);
+	QMatrix4x4 matrix;
+	matrix.translate(x, y);
+	glUniformMatrix4fv(locs.translationMatrixLoc, 1, GL_FALSE, matrix.data());
 	
 	glDrawArrays(GL_LINE_LOOP, 0, el->getNumber());
 }
@@ -258,70 +254,6 @@ void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
 
 QVector3D operator!(const Point& p) {
 	return QVector3D(p.x(), p.y(), p.z());
-}
-
-void Canvas::sendProjectMatrix() {
-	GLint projectionMatrix = glGetUniformLocation(program, "projectionMatrix");
-	glUniformMatrix4fv(projectionMatrix, 1, GL_FALSE, projection.data());
-
-}
-void Canvas::sendLookAtMatrix() {
-	GLint lookAtMatrix = glGetUniformLocation(program, "lookAtMatrix");
-	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
-	glUniformMatrix4fv(lookAtMatrix, 1, GL_FALSE, m.data());
-
-	GLint camera = glGetUniformLocation(program, "camera");
-	glUniform3f(camera, cameraPos.x(), cameraPos.y(), cameraPos.z());
-
-	GLint back = glGetUniformLocation(program, "background");
-	glUniform3f(back, background.r, background.g, background.b);
-}
-void Canvas::sendRotateSceneMatrix(float angle, float x, float y, float z) {
-	GLint rotationSceneMatrix = glGetUniformLocation(program, "rotationSceneMatrix");
-	QMatrix4x4 matrix;
-	matrix.rotate(angle, x, y, z);
-	glUniformMatrix4fv(rotationSceneMatrix, 1, GL_FALSE, matrix.data());
-
-}
-void Canvas::sendTranslateMatrix(float x, float y) {
-	GLint translationMatrix = glGetUniformLocation(program, "translationMatrix");
-	QMatrix4x4 matrix;
-	matrix.translate(x, y);
-	glUniformMatrix4fv(translationMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendRotateElemMatrix(float angle, float x, float y, float z) {
-	GLint rotationElementMatrix = glGetUniformLocation(program, "rotationElementMatrix");
-	QMatrix4x4 matrix;
-	matrix.rotate(angle, x, y, z);
-	glUniformMatrix4fv(rotationElementMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendScaleElementMatrix(float scale) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingElementMatrix");
-	QMatrix4x4 matrix;
-	matrix.scale(scale);
-	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendScaleElementMatrix(float x, float y, float z) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingElementMatrix");
-	QMatrix4x4 matrix;
-	matrix.scale(x, y, z);
-	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendSceneScaleMatrix(float scale) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingSceneMatrix");
-	QMatrix4x4 matrix;
-	matrix.scale(scale);
-	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendSceneScaleMatrix(float x, float y, float z) {
-	GLint scalingMatrix = glGetUniformLocation(program, "scalingSceneMatrix");
-	QMatrix4x4 matrix;
-	matrix.scale(x, y, z);
-	glUniformMatrix4fv(scalingMatrix, 1, GL_FALSE, matrix.data());
-}
-void Canvas::sendForegroundColor(Color c) {
-	GLint drawingColor = glGetUniformLocation(program, "drawingColor");
-	glUniform4f(drawingColor, c.r, c.g, c.b, c.a);
 }
 
 void Canvas::createSquareCircle() {
@@ -346,55 +278,67 @@ void Canvas::createLab3Primitive(size_t n) {
 
 void Canvas::setForegroundR(size_t i) {
 	foreground.r = float(i) / 255;
-	update();
+	updateForegroundColor();
 }
 void Canvas::setForegroundG(size_t i) {
 	foreground.g = float(i) / 255;
-	update();
+	updateForegroundColor();
 }
 void Canvas::setForegroundB(size_t i) {
 	foreground.b = float(i) / 255;
-	update();
+	updateForegroundColor();
 }
 void Canvas::setForegroundA(size_t i) {
 	foreground.a = float(i) / 255;
-	update();
+	updateForegroundColor();
 }
 void Canvas::setBackgroundR(size_t i) {
 	background.r = float(i) / 255;
-	update();
+	updateBackgroundColor();
 }
 void Canvas::setBackgroundG(size_t i) {
 	background.g = float(i) / 255;
-	update();
+	updateBackgroundColor();
 }
 void Canvas::setBackgroundB(size_t i) {
 	background.b = float(i) / 255;
-	update();
+	updateBackgroundColor();
 }
 void Canvas::setBackgroundA(size_t i) {
 	background.a = float(i) / 255;
-	update();
+	updateBackgroundColor();
 }
 
 void Canvas::setSize(size_t i) {
-	size = float(i) / 1000;
+	QMatrix4x4 matrix;
+	matrix.scale(float(i) / 1000);
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.scalingElementMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setScale(size_t i) {
-	scale = float(i) / 2000;
+	QMatrix4x4 matrix;
+	matrix.scale(float(i) / 2000);
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.scalingSceneMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setElementAngle(size_t i) {
-	elementAngle = i;
+	QMatrix4x4 matrix;
+	matrix.rotate(i, 0.f, 0.f, 1.f);
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.rotationElementMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setSceneAngle(size_t i) {
-	sceneAngle = i;
+	QMatrix4x4 matrix;
+	matrix.rotate(i, 0.f, 0.f, 1.f);
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.rotationSceneMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setLineWidth(size_t i) {
-	lineWidth = float(i) / 100;
+	glLineWidth(float(i) / 100);
 	update();
 }
 
@@ -408,10 +352,6 @@ void Canvas::randomSlot() {
 }
 void Canvas::circleSlot() {
 	coordinates.setCircle();
-	update();
-}
-void Canvas::csSlot() {
-	coordinates.setSquaredCircle();
 	update();
 }
 void Canvas::centerSlot() {
@@ -428,5 +368,26 @@ void Canvas::resetCamera() {
 
 void Canvas::lookAtNull() {
 	lookPoint = -cameraPos;
+	update();
+}
+
+void Canvas::updateLookAt() {
+	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
+
+	glUseProgram(program);
+	glUniformMatrix4fv(locs.lookAtMatrixLoc, 1, GL_FALSE, m.data());
+	glUniform3f(locs.cameraLoc, cameraPos.x(), cameraPos.y(), cameraPos.z());
+
+	update();
+}
+void Canvas::updateForegroundColor() {
+	glUseProgram(program);
+	glUniform4f(locs.drawingColorLoc,
+				foreground.r, foreground.g, foreground.b, foreground.a);
+	update();
+}
+void Canvas::updateBackgroundColor() {
+	glUseProgram(program);
+	glClearColor(background.r, background.g, background.b, background.a);
 	update();
 }

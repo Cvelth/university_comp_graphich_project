@@ -17,26 +17,6 @@ Lab1::Lab1(QWidget *parent)
 	ui.lPB->hide();		ui.PB->hide();	  ui.addPB->hide();
 	ui.lPR->hide();		ui.PR->hide();	  ui.addPR->hide();
 	ui.lPN->hide();		ui.PN->hide();	  ui.addPN->hide();
-	
-	ui.BR->setValue(25);
-	ui.BG->setValue(0);
-	ui.BB->setValue(50);
-
-	ui.FR->setValue(250);
-	ui.FG->setValue(50);
-	ui.FB->setValue(50);
-	ui.FA->setValue(255);
-
-	ui.ElementAngle->setValue(0);
-	ui.SceneAngle->setValue(0);
-	ui.Number->setValue(1);
-	ui.Size->setValue(750);
-	ui.Scale->setValue(1500);
-	ui.Width->setValue(200);
-
-	ui.Speed->setValue(0);
-
-	ui.centerButton->click();
 
 	a = new AnimationHolder(&ui);
 }
@@ -149,4 +129,28 @@ void Lab1::eventSlot() {
 	} else if (ui.lab3->isChecked()) {
 		c->createLab3Primitive(ui.PN->value() * 2);
 	}
+}
+
+void Lab1::show(){
+	QWidget::show();
+
+	ui.BR->setValue(25);
+	ui.BG->setValue(0);
+	ui.BB->setValue(50);
+	
+	ui.FR->setValue(250);
+	ui.FG->setValue(50);
+	ui.FB->setValue(50);
+	ui.FA->setValue(255);
+	
+	ui.ElementAngle->setValue(0);
+	ui.SceneAngle->setValue(0);
+	ui.Number->setValue(1);
+	ui.Size->setValue(750);
+	ui.Scale->setValue(1500);
+	ui.Width->setValue(200);
+	
+	ui.Speed->setValue(0);
+	
+	ui.centerButton->click();
 }

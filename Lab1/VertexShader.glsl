@@ -20,9 +20,7 @@ void main() {
 	gl_Position = projectionMatrix * lookAtMatrix * rotationSceneMatrix * scalingSceneMatrix 
 				* translationMatrix * rotationElementMatrix * scalingElementMatrix 
 				* vec4(position, 1.0);
-	float t = length(gl_Position - vec4(camera, 0.0));
-	if (t > 5)
-		theColor = drawingColor / t * 5 + vec4(background, 0.0);
-	else
-		theColor = drawingColor;
+
+	float alpha = drawingColor[3] / length(gl_Position - vec4(camera, 0.0)) * 12 - drawingColor[3];
+	theColor = vec4(vec3(drawingColor), alpha);
 }
