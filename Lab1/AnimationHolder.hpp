@@ -62,6 +62,9 @@ public:
 		PR = Data(ui->PR->value(), TYPICAL_Q, ui->PR->maximum(), ui->PR->minimum());
 		PN = Data(ui->PN->value(), TYPICAL_Q / 10.f, ui->PN->maximum(), ui->PN->minimum());
 	};
+	~AnimationHolder() {
+		delete t;
+	}
 
 public slots:
 	void step() {

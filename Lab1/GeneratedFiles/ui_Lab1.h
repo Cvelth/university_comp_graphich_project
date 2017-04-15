@@ -42,6 +42,9 @@ public:
     QRadioButton *lab2;
     QRadioButton *lab3;
     QRadioButton *lab4;
+    QRadioButton *lab5;
+    QRadioButton *lab6;
+    QRadioButton *lab7;
     QGroupBox *lab4_groupBox;
     QVBoxLayout *verticalLayout_7;
     QHBoxLayout *horizontalLayout_9;
@@ -198,6 +201,23 @@ public:
         lab4->setChecked(false);
 
         horizontalLayout_8->addWidget(lab4);
+
+        lab5 = new QRadioButton(verticalLayoutWidget);
+        lab5->setObjectName(QStringLiteral("lab5"));
+
+        horizontalLayout_8->addWidget(lab5);
+
+        lab6 = new QRadioButton(verticalLayoutWidget);
+        lab6->setObjectName(QStringLiteral("lab6"));
+        lab6->setChecked(false);
+
+        horizontalLayout_8->addWidget(lab6);
+
+        lab7 = new QRadioButton(verticalLayoutWidget);
+        lab7->setObjectName(QStringLiteral("lab7"));
+        lab7->setChecked(false);
+
+        horizontalLayout_8->addWidget(lab7);
 
 
         verticalLayout->addLayout(horizontalLayout_8);
@@ -769,7 +789,6 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
-        verticalLayout_3->setStretch(0, 1);
 
         retranslateUi(Lab1Class);
 
@@ -783,6 +802,9 @@ public:
         lab2->setText(QApplication::translate("Lab1Class", "Lab 2", Q_NULLPTR));
         lab3->setText(QApplication::translate("Lab1Class", "Lab 3", Q_NULLPTR));
         lab4->setText(QApplication::translate("Lab1Class", "Lab 4", Q_NULLPTR));
+        lab5->setText(QApplication::translate("Lab1Class", "Lab 5", Q_NULLPTR));
+        lab6->setText(QApplication::translate("Lab1Class", "Lab 6", Q_NULLPTR));
+        lab7->setText(QApplication::translate("Lab1Class", "Lab 7", Q_NULLPTR));
         lab4_groupBox->setTitle(QApplication::translate("Lab1Class", "Lab", Q_NULLPTR));
         linearButton->setText(QApplication::translate("Lab1Class", "Linear", Q_NULLPTR));
         columnButton->setText(QApplication::translate("Lab1Class", "Column", Q_NULLPTR));

@@ -5,6 +5,8 @@
 #include "ComplexElement.hpp"
 #include <CoordinatesHolder.hpp>
 
+class AbstractMovementHolder;
+
 struct Color {
 public:
 	float r, g, b, a;
@@ -57,6 +59,9 @@ protected:
 
 	GLuint program;
 
+	AbstractMovementHolder* insertedMovementHolder;
+	bool isMovementHolderInserted;
+
 protected:
 	virtual void initializeGL() override;
 	virtual void resizeGL(int w, int h) override;
@@ -83,6 +88,8 @@ protected:
 	virtual void drawElement(ComplexElement* el, float x = 0.f, float y = 0.f);
 	virtual void drawElement(ComplexElement* el, CoordinatesHolder c);
 
+	virtual void insertMovementHolder(AbstractMovementHolder* mh);
+	virtual void removeMovementHolder();
 public:
 	Canvas();
 	virtual ~Canvas();
@@ -94,6 +101,7 @@ public slots :
 	void createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 	void createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 	void createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
+	void createLab5Primitive(AbstractMovementHolder* mh);
 
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);
@@ -121,4 +129,6 @@ public slots :
 	void updateLookAt();
 	void updateForegroundColor();
 	void updateBackgroundColor();
+
+	void update();
 };

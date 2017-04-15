@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Lab1</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0">
+  <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="sizePolicy">
@@ -47,7 +47,7 @@
         <enum>QLayout::SetMinimumSize</enum>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,0,0,0,0,0">
          <item>
           <widget class="QRadioButton" name="lab1">
            <property name="text">
@@ -82,6 +82,33 @@
           <widget class="QRadioButton" name="lab4">
            <property name="text">
             <string>Lab 4</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab5">
+           <property name="text">
+            <string>Lab 5</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab6">
+           <property name="text">
+            <string>Lab 6</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab7">
+           <property name="text">
+            <string>Lab 7</string>
            </property>
            <property name="checked">
             <bool>false</bool>
@@ -168,8 +195,6 @@
           </item>
          </layout>
          <zorder></zorder>
-         <zorder>horizontalLayoutWidget_2</zorder>
-         <zorder>horizontalLayoutWidget_3</zorder>
         </widget>
        </item>
        <item>

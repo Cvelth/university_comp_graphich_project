@@ -1,4 +1,7 @@
 #include "Lab1.h"
+#include "Canvas.hpp"
+#include "AnimationHolder.hpp"
+#include "MovementHolder.hpp"
 
 Lab1::Lab1(QWidget *parent)
 	: QWidget(parent)
@@ -22,11 +25,15 @@ Lab1::Lab1(QWidget *parent)
 	ui.form_groupBox->show();
 
 	a = new AnimationHolder(&ui);
+	m = new MovementHolderL2(ui.Speed);
+	connect(ui.runButton, &QPushButton::clicked, this, &Lab1::runMovementHolder);
+	connect(m, &MovementHolderL2::update, c, &Canvas::update);
 }
 
 Lab1::~Lab1() {
 	delete c;
 	delete a;
+	delete m;
 }
 
 void Lab1::connectGUI() {
@@ -34,6 +41,7 @@ void Lab1::connectGUI() {
 	connect(ui.lab2, &QRadioButton::clicked, this, &Lab1::lab2Slot);
 	connect(ui.lab3, &QRadioButton::clicked, this, &Lab1::lab3Slot);
 	connect(ui.lab4, &QRadioButton::clicked, this, &Lab1::lab4Slot);
+	connect(ui.lab5, &QRadioButton::clicked, this, &Lab1::lab5Slot);
 
 	connect(ui.PA, &QSlider::valueChanged, this, &Lab1::eventSlot);
 	connect(ui.PB, &QSlider::valueChanged, this, &Lab1::eventSlot);
@@ -161,6 +169,32 @@ void Lab1::lab4Slot() {
 	eventSlot();
 }
 
+void Lab1::lab5Slot() {
+	ui.lPA->show();
+	ui.lPB->show();
+	ui.lPR->show();
+	ui.lPN->show();
+
+	ui.PA->show();
+	ui.PB->show();
+	ui.PR->show();
+	ui.PN->show();
+
+	ui.addPA->show();
+	ui.addPB->show();
+	ui.addPR->show();
+	ui.addPN->show();
+
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
+	eventSlot();
+}
+
+void Lab1::runMovementHolder(bool b) {
+	m->run(b);
+}
+
 void Lab1::eventSlot() {
 	if (ui.lab1->isChecked()) {
 		//Nothing to do.
@@ -197,7 +231,8 @@ void Lab1::eventSlot() {
 										 ui.yCheck->isChecked(),
 										 ui.xAxis->isChecked(),
 										 ui.yAxis->isChecked());
-	}
+	} else if (ui.lab5->isChecked())
+		c->createLab5Primitive(m);
 }
 
 void Lab1::show(){

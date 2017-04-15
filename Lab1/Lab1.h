@@ -1,8 +1,10 @@
 #pragma once
 #include <QtWidgets>
 #include "ui_Lab1.h"
-#include "Canvas.hpp"
-#include "AnimationHolder.hpp"
+
+class Canvas;
+class AnimationHolder;
+class AbstractMovementHolder;
 
 class Lab1 : public QWidget
 {
@@ -19,6 +21,7 @@ private:
 	Ui::Lab1Class ui;
 	Canvas *c;
 	AnimationHolder *a;
+	AbstractMovementHolder *m;
 
 private slots:
 	void eventSlot();
@@ -26,6 +29,9 @@ private slots:
 	void lab2Slot();
 	void lab3Slot();
 	void lab4Slot();
+	void lab5Slot();
+
+	void runMovementHolder(bool b);
 
 public slots:
 	void show();

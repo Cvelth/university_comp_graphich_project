@@ -5,8 +5,9 @@
 #include "Lab4Primitives.hpp"
 #include "SquareCircle.h"
 #include <qevent.h>
+#include "MovementHolder.hpp"
 
-Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), isMouseLocked(false) {
+Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), isMouseLocked(false), isMovementHolderInserted(false) {
 	buffers = new GLuint[1];
 	resetCamera();
 }
@@ -234,6 +235,10 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 
 	QMatrix4x4 matrix;
 	matrix.translate(x, y);
+	if (isMovementHolderInserted) {
+		auto p = insertedMovementHolder->getPos();
+		matrix.translate(p.x(), p.y(), p.z());
+	}
 	glUniformMatrix4fv(locs.translationMatrixLoc, 1, GL_FALSE, matrix.data());
 	
 	glDrawArrays(el->getConnection(), 0, el->getNumber());
@@ -253,17 +258,29 @@ void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
 		drawElement(el, p.x(), p.y());
 }
 
+void Canvas::insertMovementHolder(AbstractMovementHolder * mh) {
+	insertedMovementHolder = mh;
+	isMovementHolderInserted = true;
+}
+
+void Canvas::removeMovementHolder() {
+	insertedMovementHolder = nullptr;
+	isMovementHolderInserted = false;
+}
+
 QVector3D operator!(const Point& p) {
 	return QVector3D(p.x(), p.y(), p.z());
 }
 
 void Canvas::createSquareCircle() {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new SquareCircle(0.f, 0.f, 1.f, 90);
 	sendData();
 	update();
 }
 void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new Lab2Primitive(a, b, r, n);
 	sendData();
@@ -271,6 +288,7 @@ void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 }
 
 void Canvas::createLab3Primitive(size_t n) {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new Lab3Primitive(n);
 	sendData();
@@ -278,6 +296,7 @@ void Canvas::createLab3Primitive(size_t n) {
 }
 
 void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new Lab4LinearPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -285,6 +304,7 @@ void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool 
 }
 
 void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new Lab4ColumnPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -292,10 +312,16 @@ void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool 
 }
 
 void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	removeMovementHolder();
 	if (element) delete element;
 	element = new Lab4SectorPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
 	update();
+}
+
+void Canvas::createLab5Primitive(AbstractMovementHolder* mh) {
+	createLab3Primitive(15);
+	insertMovementHolder(mh);
 }
 
 void Canvas::setForegroundR(size_t i) {
@@ -412,4 +438,8 @@ void Canvas::updateBackgroundColor() {
 	glUseProgram(program);
 	glClearColor(background.r, background.g, background.b, background.a);
 	update();
+}
+
+void Canvas::update() {
+	QOpenGLWidget::update();
 }
