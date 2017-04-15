@@ -3,11 +3,12 @@
 #include "Lab2Primitive.hpp"
 #include "Lab3Primitive.hpp"
 #include "Lab4Primitives.hpp"
+#include "Lab6Primitive.hpp"
 #include "SquareCircle.h"
 #include <qevent.h>
 #include "MovementHolder.hpp"
 
-Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), isMouseLocked(false), isMovementHolderInserted(false) {
+Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), elementN(nullptr), isMouseLocked(false), isMovementHolderInserted(false), useNormals(false) {
 	buffers = new GLuint[1];
 	resetCamera();
 }
@@ -15,6 +16,7 @@ Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), isMouseLo
 Canvas::~Canvas() {
 	if (buffers) delete[] buffers;
 	if (element) delete element;
+	if (elementN) delete elementN;
 }
 
 void Canvas::initializeGL() {
@@ -49,7 +51,10 @@ void Canvas::paintGL() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
-	drawElement(element, coordinates);
+	if (useNormals)
+		drawElement(elementN, coordinates);
+	else
+		drawElement(element, coordinates);
 }
 
 void Canvas::mousePressEvent(QMouseEvent * e) {
@@ -67,7 +72,7 @@ void Canvas::mouseMoveEvent(QMouseEvent * e) {
 		float x = e->x() - width() / 2;
 		float y = e->y() - height() / 2;
 		lookPoint += lookPoint * upVector * x / height();
-		lookPoint += upVector * lookPoint * Point(0, 0, 1) * y / height();
+		lookPoint -= Point(0, 0, 1) * upVector * lookPoint * y / height();
 		QCursor::setPos(mapToGlobal(QPoint(width() / 2, height() / 2)));
 		updateLookAt();
 	}
@@ -200,8 +205,13 @@ UniformLocations Canvas::getShaderUniformLocs() {
 
 void Canvas::sendData() {
 	delete[] buffers;
-	buffers = generateBuffers(element->getElementsNumber());
-	sendElement(element);
+	if (useNormals) {
+		buffers = generateBuffers(elementN->getElementsNumber());
+		sendElement(elementN);
+	} else {
+		buffers = generateBuffers(element->getElementsNumber());
+		sendElement(element);
+	}
 }
 
 void Canvas::sendElement(SimpleElement *el, GLuint buffer) {
@@ -226,7 +236,7 @@ void Canvas::sendElement(SimpleElement *el) {
 void Canvas::sendElement(ComplexElement *el) {
 	size_t i = 0;
 	for (auto se : **el)
-		sendElement(&se, buffers[i++]);
+		sendElement(se, buffers[i++]);
 }
 
 void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
@@ -240,7 +250,6 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 		matrix.translate(p.x(), p.y(), p.z());
 	}
 	glUniformMatrix4fv(locs.translationMatrixLoc, 1, GL_FALSE, matrix.data());
-	
 	glDrawArrays(el->getConnection(), 0, el->getNumber());
 }
 void Canvas::drawElement(SimpleElement *el, float x, float y) {
@@ -250,10 +259,25 @@ void Canvas::drawElement(SimpleElement *el, float x, float y) {
 void Canvas::drawElement(ComplexElement * el, float x, float y) {
 	size_t i = 0;
 	if (el) for (auto se : **el)
-		drawElement(&se, buffers[i++], x, y);
+		drawElement(se, buffers[i++], x, y);
 }
 
 void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
+	for (auto p : *c)
+		drawElement(el, p.x(), p.y());
+}
+
+void Canvas::drawElement(ComplexNormalElement * el, float x, float y) {
+	size_t i = 0;
+	if (el) for (auto se : **el) {
+		auto sne = (SimpleNormalElement*) se;
+		if (checkCullFacingWithRotation(sne->getPlane()))
+			drawElement(sne, buffers[i], x, y);
+		i++;
+	}
+}
+
+void Canvas::drawElement(ComplexNormalElement * el, CoordinatesHolder c) {
 	for (auto p : *c)
 		drawElement(el, p.x(), p.y());
 }
@@ -268,12 +292,21 @@ void Canvas::removeMovementHolder() {
 	isMovementHolderInserted = false;
 }
 
+bool Canvas::checkCullFacing(Plane & p) {
+	return (-cameraPos ^ (lookMatrix * p).getNormal()) < 0.f;
+}
+
+bool Canvas::checkCullFacingWithRotation(Plane & p) {
+	return checkCullFacing(rotation * p);
+}
+
 QVector3D operator!(const Point& p) {
 	return QVector3D(p.x(), p.y(), p.z());
 }
 
 void Canvas::createSquareCircle() {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new SquareCircle(0.f, 0.f, 1.f, 90);
 	sendData();
@@ -281,6 +314,7 @@ void Canvas::createSquareCircle() {
 }
 void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new Lab2Primitive(a, b, r, n);
 	sendData();
@@ -289,6 +323,7 @@ void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 
 void Canvas::createLab3Primitive(size_t n) {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new Lab3Primitive(n);
 	sendData();
@@ -297,6 +332,7 @@ void Canvas::createLab3Primitive(size_t n) {
 
 void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new Lab4LinearPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -305,6 +341,7 @@ void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool 
 
 void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new Lab4ColumnPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -313,6 +350,7 @@ void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool 
 
 void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
+	useNormals = false;
 	if (element) delete element;
 	element = new Lab4SectorPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -321,7 +359,17 @@ void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool 
 
 void Canvas::createLab5Primitive(AbstractMovementHolder* mh) {
 	createLab3Primitive(15);
+	useNormals = false;
 	insertMovementHolder(mh);
+}
+
+void Canvas::createLab6Primitive() {
+	removeMovementHolder();
+	useNormals = true;
+	if (elementN) delete elementN;
+	elementN = new Lab6Primitive();
+	sendData();
+	update();
 }
 
 void Canvas::setForegroundR(size_t i) {
@@ -371,9 +419,12 @@ void Canvas::setScale(size_t i) {
 	glUniformMatrix4fv(locs.scalingSceneMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
-void Canvas::setElementAngle(size_t i) {
+void Canvas::setElementAngle(size_t x, size_t y, size_t z) {
 	QMatrix4x4 matrix;
-	matrix.rotate(i, 0.f, 0.f, 1.f);
+	matrix.rotate(x, 1.f, 0.f, 0.f);
+	matrix.rotate(y, 0.f, 1.f, 0.f);
+	matrix.rotate(z, 0.f, 0.f, 1.f);
+	rotation = matrix;
 	glUseProgram(program);
 	glUniformMatrix4fv(locs.rotationElementMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
@@ -421,6 +472,7 @@ void Canvas::lookAtNull() {
 
 void Canvas::updateLookAt() {
 	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
+	lookMatrix = m;
 
 	glUseProgram(program);
 	glUniformMatrix4fv(locs.lookAtMatrixLoc, 1, GL_FALSE, m.data());
@@ -442,4 +494,20 @@ void Canvas::updateBackgroundColor() {
 
 void Canvas::update() {
 	QOpenGLWidget::update();
+}
+
+GLenum _enumSwitch(VertexConnectionType e) {
+	switch (e) {
+		case VertexConnectionType::Points: return GL_POINTS;
+		case VertexConnectionType::Lines: return GL_LINES;
+		case VertexConnectionType::LineStrip: return GL_LINE_STRIP;
+		case VertexConnectionType::LineLoop: return GL_LINE_LOOP;
+		case VertexConnectionType::Triangles: return GL_TRIANGLES;
+		case VertexConnectionType::TriangleStrip: return GL_TRIANGLE_STRIP;
+		case VertexConnectionType::TriangleFan: return GL_TRIANGLE_FAN;
+		case VertexConnectionType::Quads: return GL_QUADS;
+		case VertexConnectionType::QuadStrip: return GL_QUAD_STRIP;
+		case VertexConnectionType::Polygon: return GL_POLYGON;
+		default: return 0;
+	}
 }

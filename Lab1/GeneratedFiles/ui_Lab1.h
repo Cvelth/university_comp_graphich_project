@@ -91,18 +91,24 @@ public:
     QGroupBox *place_groupBox;
     QHBoxLayout *horizontalLayout_3;
     QGridLayout *gridLayout_3;
-    QSlider *ElementAngle;
-    QLabel *label_8;
-    QSlider *SceneAngle;
-    QLabel *label;
-    QLabel *label_6;
-    QLabel *label_14;
-    QSlider *Size;
     QPushButton *addWidth;
+    QLabel *label_8;
     QPushButton *addSize;
-    QPushButton *addEAngle;
-    QPushButton *addSAngle;
+    QSlider *Size;
     QSlider *Width;
+    QSlider *SceneAngle;
+    QSlider *ElementAngleX;
+    QPushButton *addSAngle;
+    QLabel *label_14;
+    QLabel *label;
+    QPushButton *addEAngleX;
+    QLabel *label_6;
+    QLabel *label_16;
+    QSlider *ElementAngleY;
+    QPushButton *addEAngleY;
+    QLabel *label_17;
+    QSlider *ElementAngleZ;
+    QPushButton *addEAngleZ;
     QGroupBox *color_groupBox;
     QVBoxLayout *verticalLayout_2;
     QGroupBox *back_groupBox;
@@ -143,7 +149,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(713, 1059);
+        Lab1Class->resize(1133, 1075);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -484,45 +490,23 @@ public:
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setSpacing(6);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        ElementAngle = new QSlider(place_groupBox);
-        ElementAngle->setObjectName(QStringLiteral("ElementAngle"));
-        ElementAngle->setMaximum(360);
-        ElementAngle->setValue(359);
-        ElementAngle->setOrientation(Qt::Horizontal);
+        addWidth = new QPushButton(place_groupBox);
+        addWidth->setObjectName(QStringLiteral("addWidth"));
+        addWidth->setCheckable(true);
 
-        gridLayout_3->addWidget(ElementAngle, 3, 1, 1, 1);
+        gridLayout_3->addWidget(addWidth, 1, 2, 1, 1);
 
         label_8 = new QLabel(place_groupBox);
         label_8->setObjectName(QStringLiteral("label_8"));
         label_8->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout_3->addWidget(label_8, 4, 0, 1, 1);
+        gridLayout_3->addWidget(label_8, 6, 0, 1, 1);
 
-        SceneAngle = new QSlider(place_groupBox);
-        SceneAngle->setObjectName(QStringLiteral("SceneAngle"));
-        SceneAngle->setMaximum(360);
-        SceneAngle->setValue(359);
-        SceneAngle->setOrientation(Qt::Horizontal);
+        addSize = new QPushButton(place_groupBox);
+        addSize->setObjectName(QStringLiteral("addSize"));
+        addSize->setCheckable(true);
 
-        gridLayout_3->addWidget(SceneAngle, 4, 1, 1, 1);
-
-        label = new QLabel(place_groupBox);
-        label->setObjectName(QStringLiteral("label"));
-        label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout_3->addWidget(label, 2, 0, 1, 1);
-
-        label_6 = new QLabel(place_groupBox);
-        label_6->setObjectName(QStringLiteral("label_6"));
-        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout_3->addWidget(label_6, 3, 0, 1, 1);
-
-        label_14 = new QLabel(place_groupBox);
-        label_14->setObjectName(QStringLiteral("label_14"));
-        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout_3->addWidget(label_14, 1, 0, 1, 1);
+        gridLayout_3->addWidget(addSize, 2, 2, 1, 1);
 
         Size = new QSlider(place_groupBox);
         Size->setObjectName(QStringLiteral("Size"));
@@ -533,30 +517,6 @@ public:
 
         gridLayout_3->addWidget(Size, 2, 1, 1, 1);
 
-        addWidth = new QPushButton(place_groupBox);
-        addWidth->setObjectName(QStringLiteral("addWidth"));
-        addWidth->setCheckable(true);
-
-        gridLayout_3->addWidget(addWidth, 1, 2, 1, 1);
-
-        addSize = new QPushButton(place_groupBox);
-        addSize->setObjectName(QStringLiteral("addSize"));
-        addSize->setCheckable(true);
-
-        gridLayout_3->addWidget(addSize, 2, 2, 1, 1);
-
-        addEAngle = new QPushButton(place_groupBox);
-        addEAngle->setObjectName(QStringLiteral("addEAngle"));
-        addEAngle->setCheckable(true);
-
-        gridLayout_3->addWidget(addEAngle, 3, 2, 1, 1);
-
-        addSAngle = new QPushButton(place_groupBox);
-        addSAngle->setObjectName(QStringLiteral("addSAngle"));
-        addSAngle->setCheckable(true);
-
-        gridLayout_3->addWidget(addSAngle, 4, 2, 1, 1);
-
         Width = new QSlider(place_groupBox);
         Width->setObjectName(QStringLiteral("Width"));
         Width->setMinimum(50);
@@ -565,6 +525,92 @@ public:
         Width->setOrientation(Qt::Horizontal);
 
         gridLayout_3->addWidget(Width, 1, 1, 1, 1);
+
+        SceneAngle = new QSlider(place_groupBox);
+        SceneAngle->setObjectName(QStringLiteral("SceneAngle"));
+        SceneAngle->setMaximum(360);
+        SceneAngle->setValue(359);
+        SceneAngle->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(SceneAngle, 6, 1, 1, 1);
+
+        ElementAngleX = new QSlider(place_groupBox);
+        ElementAngleX->setObjectName(QStringLiteral("ElementAngleX"));
+        ElementAngleX->setMaximum(360);
+        ElementAngleX->setValue(359);
+        ElementAngleX->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(ElementAngleX, 3, 1, 1, 1);
+
+        addSAngle = new QPushButton(place_groupBox);
+        addSAngle->setObjectName(QStringLiteral("addSAngle"));
+        addSAngle->setCheckable(true);
+
+        gridLayout_3->addWidget(addSAngle, 6, 2, 1, 1);
+
+        label_14 = new QLabel(place_groupBox);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_14, 1, 0, 1, 1);
+
+        label = new QLabel(place_groupBox);
+        label->setObjectName(QStringLiteral("label"));
+        label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label, 2, 0, 1, 1);
+
+        addEAngleX = new QPushButton(place_groupBox);
+        addEAngleX->setObjectName(QStringLiteral("addEAngleX"));
+        addEAngleX->setCheckable(true);
+
+        gridLayout_3->addWidget(addEAngleX, 3, 2, 1, 1);
+
+        label_6 = new QLabel(place_groupBox);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_6, 3, 0, 1, 1);
+
+        label_16 = new QLabel(place_groupBox);
+        label_16->setObjectName(QStringLiteral("label_16"));
+        label_16->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_16, 4, 0, 1, 1);
+
+        ElementAngleY = new QSlider(place_groupBox);
+        ElementAngleY->setObjectName(QStringLiteral("ElementAngleY"));
+        ElementAngleY->setMaximum(360);
+        ElementAngleY->setValue(359);
+        ElementAngleY->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(ElementAngleY, 4, 1, 1, 1);
+
+        addEAngleY = new QPushButton(place_groupBox);
+        addEAngleY->setObjectName(QStringLiteral("addEAngleY"));
+        addEAngleY->setCheckable(true);
+
+        gridLayout_3->addWidget(addEAngleY, 4, 2, 1, 1);
+
+        label_17 = new QLabel(place_groupBox);
+        label_17->setObjectName(QStringLiteral("label_17"));
+        label_17->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout_3->addWidget(label_17, 5, 0, 1, 1);
+
+        ElementAngleZ = new QSlider(place_groupBox);
+        ElementAngleZ->setObjectName(QStringLiteral("ElementAngleZ"));
+        ElementAngleZ->setMaximum(360);
+        ElementAngleZ->setValue(359);
+        ElementAngleZ->setOrientation(Qt::Horizontal);
+
+        gridLayout_3->addWidget(ElementAngleZ, 5, 1, 1, 1);
+
+        addEAngleZ = new QPushButton(place_groupBox);
+        addEAngleZ->setObjectName(QStringLiteral("addEAngleZ"));
+        addEAngleZ->setCheckable(true);
+
+        gridLayout_3->addWidget(addEAngleZ, 5, 2, 1, 1);
 
 
         horizontalLayout_3->addLayout(gridLayout_3);
@@ -834,18 +880,24 @@ public:
 "Number", Q_NULLPTR));
         addNumber->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         place_groupBox->setTitle(QApplication::translate("Lab1Class", "Placing", Q_NULLPTR));
+        addWidth->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         label_8->setText(QApplication::translate("Lab1Class", "Scene\n"
 "Angle", Q_NULLPTR));
-        label->setText(QApplication::translate("Lab1Class", "Element\n"
-"Size", Q_NULLPTR));
-        label_6->setText(QApplication::translate("Lab1Class", "Element\n"
-"Angle", Q_NULLPTR));
+        addSize->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        addSAngle->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         label_14->setText(QApplication::translate("Lab1Class", "Lines\n"
 "Width", Q_NULLPTR));
-        addWidth->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
-        addSize->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
-        addEAngle->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
-        addSAngle->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        label->setText(QApplication::translate("Lab1Class", "Element\n"
+"Size", Q_NULLPTR));
+        addEAngleX->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        label_6->setText(QApplication::translate("Lab1Class", "Element\n"
+"X Angle", Q_NULLPTR));
+        label_16->setText(QApplication::translate("Lab1Class", "Element\n"
+"Y Angle", Q_NULLPTR));
+        addEAngleY->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
+        label_17->setText(QApplication::translate("Lab1Class", "Element\n"
+"Z Angle", Q_NULLPTR));
+        addEAngleZ->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         color_groupBox->setTitle(QApplication::translate("Lab1Class", "Colors", Q_NULLPTR));
         back_groupBox->setTitle(QApplication::translate("Lab1Class", "Background", Q_NULLPTR));
         label_12->setText(QApplication::translate("Lab1Class", "G", Q_NULLPTR));

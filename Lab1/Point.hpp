@@ -1,5 +1,7 @@
 #pragma once
 
+class QVector4D;
+
 class Point {
 private:
 	float m_x, m_y, m_z;
@@ -15,6 +17,10 @@ public:
 	void z(float z) { m_y = z; }
 
 	bool operator==(const Point& p) const;
+	inline bool operator!=(const Point& p) const {
+		return !operator==(p);
+	}
+
 	Point operator+(const Point& p) const;
 	Point operator+=(const Point& p);
 	Point operator-(const Point& p) const;
@@ -26,6 +32,8 @@ public:
 
 	Point operator*(Point p) const;
 
+	float operator^(Point& p) const;
+
 	Point operator-() const;
 	
 	static Point center(Point, Point);
@@ -33,4 +41,7 @@ public:
 	Point normalize() const;
 
 	static size_t dimentions();
+
+	operator QVector4D();
+	operator const QVector4D() const;
 };

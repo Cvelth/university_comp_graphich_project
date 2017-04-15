@@ -75,23 +75,20 @@
     <ClCompile Include="GeneratedFiles\Release\moc_Timer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_AnimationHolder.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_AnimationHolder.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleElement.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_MovementHolder.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_MovementHolder.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +150,18 @@
     </ClInclude>
     <ClInclude Include="Lab4Primitives.hpp">
       <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Lab6Primitive.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleNormalElement.hpp">
+      <Filter>Elements\AbstractElements</Filter>
+    </ClInclude>
+    <ClInclude Include="ComplexNormalElement.hpp">
+      <Filter>Elements\AbstractElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.hpp">
+      <Filter>Elements\Points</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

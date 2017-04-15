@@ -28,7 +28,8 @@ class AnimationHolder : public QObject {
 
 private:
 	Ui::Lab1Class *ui;
-	Data number, width, size, eAngle, sAngle, scale;
+	Data number, width, size, sAngle, scale;
+	Data eAngleX, eAngleY, eAngleZ;
 	Data BR, BG, BB, FR, FG, FB, FA;
 	Data PA, PB, PR, PN;
 
@@ -45,7 +46,9 @@ public:
 		number = Data(ui->Number->value(), TYPICAL_Q, ui->Number->maximum(), ui->Number->minimum());
 		width = Data(ui->Width->value(), TYPICAL_Q, ui->Width->maximum(), ui->Width->minimum());
 		size = Data(ui->Size->value(), TYPICAL_Q, ui->Size->maximum(), ui->Size->minimum());
-		eAngle = Data(ui->ElementAngle->value(), TYPICAL_Q, ui->ElementAngle->maximum(), ui->ElementAngle->minimum());
+		eAngleX = Data(ui->ElementAngleX->value(), TYPICAL_Q, ui->ElementAngleX->maximum(), ui->ElementAngleX->minimum());
+		eAngleY = Data(ui->ElementAngleY->value(), TYPICAL_Q, ui->ElementAngleY->maximum(), ui->ElementAngleY->minimum());
+		eAngleZ = Data(ui->ElementAngleZ->value(), TYPICAL_Q, ui->ElementAngleZ->maximum(), ui->ElementAngleZ->minimum());
 		sAngle = Data(ui->SceneAngle->value(), TYPICAL_Q, ui->SceneAngle->maximum(), ui->SceneAngle->minimum());
 		scale = Data(ui->Scale->value(), TYPICAL_Q, ui->Scale->maximum(), ui->Scale->minimum());
 
@@ -63,7 +66,7 @@ public:
 		PN = Data(ui->PN->value(), TYPICAL_Q / 10.f, ui->PN->maximum(), ui->PN->minimum());
 	};
 	~AnimationHolder() {
-		delete t;
+
 	}
 
 public slots:
@@ -77,8 +80,12 @@ public slots:
 			ui->Size->setValue(size.step(speed));
 		if (ui->addScale->isChecked())
 			ui->Scale->setValue(scale.step(speed));
-		if (ui->addEAngle->isChecked())
-			ui->ElementAngle->setValue(eAngle.step(speed));
+		if (ui->addEAngleX->isChecked())
+			ui->ElementAngleX->setValue(eAngleX.step(speed));
+		if (ui->addEAngleY->isChecked())
+			ui->ElementAngleY->setValue(eAngleY.step(speed));
+		if (ui->addEAngleZ->isChecked())
+			ui->ElementAngleZ->setValue(eAngleZ.step(speed));
 		if (ui->addSAngle->isChecked())
 			ui->SceneAngle->setValue(sAngle.step(speed));
 		if (ui->addBR->isChecked())

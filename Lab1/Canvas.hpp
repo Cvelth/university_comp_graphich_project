@@ -2,10 +2,11 @@
 #include <qopenglfunctions.h>
 #include <qopenglwidget.h>
 #include <qmatrix4x4.h>
-#include "ComplexElement.hpp"
+#include "ComplexNormalElement.hpp"
 #include <CoordinatesHolder.hpp>
 
 class AbstractMovementHolder;
+class Plane;
 
 struct Color {
 public:
@@ -49,8 +50,13 @@ private:
 	UniformLocations locs;
 	CoordinatesHolder coordinates;
 	ComplexElement *element;
+	ComplexNormalElement *elementN;
 	
 	bool isMouseLocked;
+	bool useNormals;
+
+	QMatrix4x4 rotation;
+	QMatrix4x4 lookMatrix;
 	
 protected:
 	Point cameraPos;
@@ -87,9 +93,14 @@ protected:
 	virtual void drawElement(SimpleElement* el, float x = 0.f, float y = 0.f);
 	virtual void drawElement(ComplexElement* el, float x = 0.f, float y = 0.f);
 	virtual void drawElement(ComplexElement* el, CoordinatesHolder c);
+	virtual void drawElement(ComplexNormalElement* el, float x = 0.f, float y = 0.f);
+	virtual void drawElement(ComplexNormalElement* el, CoordinatesHolder c);
 
 	virtual void insertMovementHolder(AbstractMovementHolder* mh);
 	virtual void removeMovementHolder();
+
+	virtual bool checkCullFacing(Plane& p);
+	virtual bool checkCullFacingWithRotation(Plane& p);
 public:
 	Canvas();
 	virtual ~Canvas();
@@ -102,6 +113,7 @@ public slots :
 	void createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 	void createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 	void createLab5Primitive(AbstractMovementHolder* mh);
+	void createLab6Primitive();
 
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);
@@ -115,7 +127,7 @@ public slots :
 	void setSize(size_t i);
 	void setScale(size_t i);
 	void setNumber(size_t i);
-	void setElementAngle(size_t i);
+	void setElementAngle(size_t x, size_t y, size_t z);
 	void setSceneAngle(size_t i);
 	void setLineWidth(size_t i);
 

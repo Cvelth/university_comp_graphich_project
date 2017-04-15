@@ -55,10 +55,10 @@ public:
 class Lab4LinearPrimitive : public ComplexElement {
 public:
 	explicit Lab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
-		if (x) m_data.push_back(Lab4LinearElementX(a, b, n));
-		if (y) m_data.push_back(Lab4LinearElementY(a, b, n));
-		if (xa) m_data.push_back(X_Axis());
-		if (ya) m_data.push_back(Y_Axis());
+		if (x) m_data.push_back(new Lab4LinearElementX(a, b, n));
+		if (y) m_data.push_back(new Lab4LinearElementY(a, b, n));
+		if (xa) m_data.push_back(new X_Axis());
+		if (ya) m_data.push_back(new Y_Axis());
 	}
 };
 
@@ -94,10 +94,10 @@ public:
 class Lab4ColumnPrimitive : public ComplexElement {
 public:
 	explicit Lab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
-		if (x) m_data.push_back(Lab4ColumnElementX(a, b, float(n) / 10.f));
-		if (y) m_data.push_back(Lab4ColumnElementY(a, b, float(n) / 10.f));
-		if (xa) m_data.push_back(X_Axis());
-		if (ya) m_data.push_back(Y_Axis());
+		if (x) m_data.push_back(new Lab4ColumnElementX(a, b, float(n) / 10.f));
+		if (y) m_data.push_back(new Lab4ColumnElementY(a, b, float(n) / 10.f));
+		if (xa) m_data.push_back(new X_Axis());
+		if (ya) m_data.push_back(new Y_Axis());
 	}
 };
 
@@ -148,9 +148,9 @@ private:
 	const float PI = 3.14159265359f;
 public:
 	explicit Lab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
-		if (x) m_data.push_back(Lab4SectorElementX(a, b, float(n) / 2.f));
-		if (y) m_data.push_back(Lab4SectorElementY(a, b, float(n) / 2.f));
-		if (xa) m_data.push_back(X_Axis());
-		if (ya) m_data.push_back(Y_Axis());
+		if (x) m_data.push_back(new Lab4SectorElementX(a, b, float(n) / 2.f));
+		if (y) m_data.push_back(new Lab4SectorElementY(a, b, float(n) / 2.f));
+		if (xa) m_data.push_back(new X_Axis());
+		if (ya) m_data.push_back(new Y_Axis());
 	}
 };

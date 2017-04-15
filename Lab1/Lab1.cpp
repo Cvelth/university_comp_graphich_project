@@ -42,6 +42,8 @@ void Lab1::connectGUI() {
 	connect(ui.lab3, &QRadioButton::clicked, this, &Lab1::lab3Slot);
 	connect(ui.lab4, &QRadioButton::clicked, this, &Lab1::lab4Slot);
 	connect(ui.lab5, &QRadioButton::clicked, this, &Lab1::lab5Slot);
+	connect(ui.lab6, &QRadioButton::clicked, this, &Lab1::lab6Slot);
+	connect(ui.lab7, &QRadioButton::clicked, this, &Lab1::lab7Slot);
 
 	connect(ui.PA, &QSlider::valueChanged, this, &Lab1::eventSlot);
 	connect(ui.PB, &QSlider::valueChanged, this, &Lab1::eventSlot);
@@ -66,7 +68,9 @@ void Lab1::connectGUI() {
 	connect(ui.FB, &QSlider::valueChanged, c, &Canvas::setForegroundB);
 	connect(ui.FA, &QSlider::valueChanged, c, &Canvas::setForegroundA);
 
-	connect(ui.ElementAngle, &QSlider::valueChanged, c, &Canvas::setElementAngle);
+	connect(ui.ElementAngleX, &QSlider::valueChanged, this, &Lab1::setElementAngle);
+	connect(ui.ElementAngleY, &QSlider::valueChanged, this, &Lab1::setElementAngle);
+	connect(ui.ElementAngleZ, &QSlider::valueChanged, this, &Lab1::setElementAngle);
 	connect(ui.SceneAngle, &QSlider::valueChanged, c, &Canvas::setSceneAngle);
 	connect(ui.Size, &QSlider::valueChanged, c, &Canvas::setSize);
 	connect(ui.Scale, &QSlider::valueChanged, c, &Canvas::setScale);
@@ -191,8 +195,36 @@ void Lab1::lab5Slot() {
 	eventSlot();
 }
 
+void Lab1::lab6Slot() {
+	ui.lPA->hide();
+	ui.lPB->hide();
+	ui.lPR->hide();
+	ui.lPN->hide();
+
+	ui.PA->hide();
+	ui.PB->hide();
+	ui.PR->hide();
+	ui.PN->hide();
+
+	ui.addPA->hide();
+	ui.addPB->hide();
+	ui.addPR->hide();
+	ui.addPN->hide();
+
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
+	c->createLab6Primitive();
+}
+
+void Lab1::lab7Slot() {}
+
 void Lab1::runMovementHolder(bool b) {
 	m->run(b);
+}
+
+void Lab1::setElementAngle() {
+	c->setElementAngle(ui.ElementAngleX->value(), ui.ElementAngleY->value(), ui.ElementAngleZ->value());
 }
 
 void Lab1::eventSlot() {
@@ -233,10 +265,14 @@ void Lab1::eventSlot() {
 										 ui.yAxis->isChecked());
 	} else if (ui.lab5->isChecked())
 		c->createLab5Primitive(m);
+	else if (ui.lab6->isChecked()) {
+		//Nothing to do.
+		//Lab6 primitive is static.
+	}
 }
 
 void Lab1::show(){
-	QWidget::show();
+	QWidget::showMaximized();
 
 	ui.BR->setValue(25);
 	ui.BG->setValue(0);
@@ -247,7 +283,9 @@ void Lab1::show(){
 	ui.FB->setValue(50);
 	ui.FA->setValue(255);
 	
-	ui.ElementAngle->setValue(0);
+	ui.ElementAngleX->setValue(0);
+	ui.ElementAngleY->setValue(0);
+	ui.ElementAngleZ->setValue(0);
 	ui.SceneAngle->setValue(0);
 	ui.Number->setValue(1);
 	ui.Size->setValue(750);

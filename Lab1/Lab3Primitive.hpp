@@ -29,8 +29,8 @@ public:
 	explicit Lab3Primitive(size_t acc = 120) {
 		float STEP = PI / acc;
 		for (float t1 = 0.f; t1 < PI * 2.f; t1 += STEP) {
-			m_data.push_back(Lab3ElementV(t1, STEP));
-			m_data.push_back(Lab3ElementH(t1, STEP));
-		}
+			m_data.push_back(new Lab3ElementV(t1, STEP));
+			m_data.push_back(new Lab3ElementH(t1, STEP));
+		}					 
 	}
 };

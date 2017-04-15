@@ -17,6 +17,6 @@ public:
 class Lab2Primitive : public ComplexElement {
 public:
 	explicit Lab2Primitive(float a, float b, float r, size_t n, size_t acc = 120) {
-		m_data.push_back(Lab2Element(a, b, r, n, acc));
+		m_data.push_back(new Lab2Element(a, b, r, n, acc));
 	}
 };

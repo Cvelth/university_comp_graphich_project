@@ -30,8 +30,12 @@ private slots:
 	void lab3Slot();
 	void lab4Slot();
 	void lab5Slot();
+	void lab6Slot();
+	void lab7Slot();
 
 	void runMovementHolder(bool b);
+
+	void setElementAngle();
 
 public slots:
 	void show();

@@ -107,9 +107,8 @@
     </ClCompile>
     <ClCompile Include="Lab1.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Point.cpp" />
-    <ClCompile Include="SimpleElement.cpp" />
-    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Lab1.h">
@@ -149,6 +148,7 @@
     </CustomBuild>
     <ClInclude Include="Circle.hpp" />
     <ClInclude Include="ComplexElement.hpp" />
+    <ClInclude Include="ComplexNormalElement.hpp" />
     <ClInclude Include="CoordinatesHolder.hpp" />
     <ClInclude Include="Lab2Primitive.hpp" />
     <ClInclude Include="Lab3Primitive.hpp" />
@@ -163,8 +163,11 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DWIN64 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="Lab6Primitive.hpp" />
+    <ClInclude Include="Plane.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="SimpleElement.hpp" />
+    <ClInclude Include="SimpleNormalElement.hpp" />
     <ClInclude Include="Square.hpp" />
     <ClInclude Include="SquareCircle.h" />
     <CustomBuild Include="Timer.hpp">
