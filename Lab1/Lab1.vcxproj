@@ -102,6 +102,7 @@
     <ClCompile Include="Lab1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="SimpleElement.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="CoordinatesHolder.hpp" />
     <ClInclude Include="Lab2Primitive.hpp" />
     <ClInclude Include="Lab3Primitive.hpp" />
+    <ClInclude Include="Lab4Primitives.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="SimpleElement.hpp" />
     <ClInclude Include="Square.hpp" />

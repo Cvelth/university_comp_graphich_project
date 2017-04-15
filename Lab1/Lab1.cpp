@@ -18,6 +18,9 @@ Lab1::Lab1(QWidget *parent)
 	ui.lPR->hide();		ui.PR->hide();	  ui.addPR->hide();
 	ui.lPN->hide();		ui.PN->hide();	  ui.addPN->hide();
 
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
 	a = new AnimationHolder(&ui);
 }
 
@@ -30,11 +33,21 @@ void Lab1::connectGUI() {
 	connect(ui.lab1, &QRadioButton::clicked, this, &Lab1::lab1Slot);
 	connect(ui.lab2, &QRadioButton::clicked, this, &Lab1::lab2Slot);
 	connect(ui.lab3, &QRadioButton::clicked, this, &Lab1::lab3Slot);
+	connect(ui.lab4, &QRadioButton::clicked, this, &Lab1::lab4Slot);
 
 	connect(ui.PA, &QSlider::valueChanged, this, &Lab1::eventSlot);
 	connect(ui.PB, &QSlider::valueChanged, this, &Lab1::eventSlot);
 	connect(ui.PR, &QSlider::valueChanged, this, &Lab1::eventSlot);
 	connect(ui.PN, &QSlider::valueChanged, this, &Lab1::eventSlot);
+
+	connect(ui.xCheck, &QCheckBox::clicked, this, &Lab1::eventSlot);
+	connect(ui.yCheck, &QCheckBox::clicked, this, &Lab1::eventSlot);
+	connect(ui.xAxis, &QCheckBox::clicked, this, &Lab1::eventSlot);
+	connect(ui.yAxis, &QCheckBox::clicked, this, &Lab1::eventSlot);
+
+	connect(ui.linearButton, &QCheckBox::clicked, this, &Lab1::eventSlot);
+	connect(ui.columnButton, &QCheckBox::clicked, this, &Lab1::eventSlot);
+	connect(ui.sectorButton, &QCheckBox::clicked, this, &Lab1::eventSlot);
 
 	connect(ui.BR, &QSlider::valueChanged, c, &Canvas::setBackgroundR);
 	connect(ui.BG, &QSlider::valueChanged, c, &Canvas::setBackgroundG);
@@ -76,6 +89,9 @@ void Lab1::lab1Slot() {
 	ui.addPR->hide();
 	ui.addPN->hide();
 
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
 	c->createSquareCircle();
 }
 
@@ -94,6 +110,9 @@ void Lab1::lab2Slot() {
 	ui.addPB->show();
 	ui.addPR->show();
 	ui.addPN->show();
+
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
 
 	eventSlot();
 }
@@ -114,6 +133,31 @@ void Lab1::lab3Slot() {
 	ui.addPR->hide();
 	ui.addPN->show();
 
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
+	eventSlot();
+}
+
+void Lab1::lab4Slot() {
+	ui.lPA->show();
+	ui.lPB->show();
+	ui.lPR->hide();
+	ui.lPN->show();
+
+	ui.PA->show();
+	ui.PB->show();
+	ui.PR->hide();
+	ui.PN->show();
+
+	ui.addPA->show();
+	ui.addPB->show();
+	ui.addPR->hide();
+	ui.addPN->show();
+
+	ui.lab4_groupBox->show();
+	ui.form_groupBox->hide();
+
 	eventSlot();
 }
 
@@ -128,6 +172,31 @@ void Lab1::eventSlot() {
 							   ui.PN->value());
 	} else if (ui.lab3->isChecked()) {
 		c->createLab3Primitive(ui.PN->value() * 2);
+	} else if (ui.lab4->isChecked()) {
+		if (ui.linearButton->isChecked())
+			c->createLab4LinearPrimitive(-float(ui.PA->value()) / 100.f,
+										 +float(ui.PB->value()) / 100.f,
+										 ui.PN->value() * 25,
+										 ui.xCheck->isChecked(),
+										 ui.yCheck->isChecked(),
+										 ui.xAxis->isChecked(),
+										 ui.yAxis->isChecked());
+		else if (ui.columnButton->isChecked())
+			c->createLab4ColumnPrimitive(-float(ui.PA->value()) / 100.f,
+										 +float(ui.PB->value()) / 100.f,
+										 ui.PN->value() * 25,
+										 ui.xCheck->isChecked(),
+										 ui.yCheck->isChecked(),
+										 ui.xAxis->isChecked(),
+										 ui.yAxis->isChecked());
+		else if (ui.sectorButton->isChecked())
+			c->createLab4SectorPrimitive(-float(ui.PA->value()) / 100.f,
+										 +float(ui.PB->value()) / 100.f,
+										 ui.PN->value() * 25,
+										 ui.xCheck->isChecked(),
+										 ui.yCheck->isChecked(),
+										 ui.xAxis->isChecked(),
+										 ui.yAxis->isChecked());
 	}
 }
 

@@ -91,6 +91,9 @@ public slots :
 	void createSquareCircle();
 	void createLab2Primitive(float a, float b, float r, size_t n);
 	void createLab3Primitive(size_t n);
+	void createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
+	void createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
+	void createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);

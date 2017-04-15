@@ -84,6 +84,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_AnimationHolder.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleElement.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Lab1.ui">
@@ -137,6 +140,9 @@
       <Filter>Elements\CustomElements</Filter>
     </ClInclude>
     <ClInclude Include="Lab3Primitive.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Lab4Primitives.hpp">
       <Filter>Elements\CustomElements</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,6 +2,7 @@
 #include <fstream>
 #include "Lab2Primitive.hpp"
 #include "Lab3Primitive.hpp"
+#include "Lab4Primitives.hpp"
 #include "SquareCircle.h"
 #include <qevent.h>
 
@@ -235,7 +236,7 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	matrix.translate(x, y);
 	glUniformMatrix4fv(locs.translationMatrixLoc, 1, GL_FALSE, matrix.data());
 	
-	glDrawArrays(GL_LINE_LOOP, 0, el->getNumber());
+	glDrawArrays(el->getConnection(), 0, el->getNumber());
 }
 void Canvas::drawElement(SimpleElement *el, float x, float y) {
 	drawElement(el, buffers[0], x, y);
@@ -272,6 +273,27 @@ void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 void Canvas::createLab3Primitive(size_t n) {
 	if (element) delete element;
 	element = new Lab3Primitive(n);
+	sendData();
+	update();
+}
+
+void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	if (element) delete element;
+	element = new Lab4LinearPrimitive(a, b, n, x, y, xa, ya);
+	sendData();
+	update();
+}
+
+void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	if (element) delete element;
+	element = new Lab4ColumnPrimitive(a, b, n, x, y, xa, ya);
+	sendData();
+	update();
+}
+
+void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
+	if (element) delete element;
+	element = new Lab4SectorPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
 	update();
 }

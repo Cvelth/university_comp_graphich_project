@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
-    <height>910</height>
+    <width>713</width>
+    <height>1059</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,22 +42,66 @@
       </layout>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,1,2,2">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,1,1,2,2">
        <property name="sizeConstraint">
         <enum>QLayout::SetMinimumSize</enum>
        </property>
        <item>
-        <widget class="QGroupBox" name="groupBox_7">
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QRadioButton" name="lab1">
+           <property name="text">
+            <string>Lab 1</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab2">
+           <property name="text">
+            <string>Lab 2</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab3">
+           <property name="text">
+            <string>Lab 3</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="lab4">
+           <property name="text">
+            <string>Lab 4</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="lab4_groupBox">
          <property name="title">
           <string>Lab</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
+         <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
             <item>
-             <widget class="QRadioButton" name="lab1">
+             <widget class="QRadioButton" name="linearButton">
               <property name="text">
-               <string>Lab 1</string>
+               <string>Linear</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -65,9 +109,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="lab2">
+             <widget class="QRadioButton" name="columnButton">
               <property name="text">
-               <string>Lab 2</string>
+               <string>Column</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -75,9 +119,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="lab3">
+             <widget class="QRadioButton" name="sectorButton">
               <property name="text">
-               <string>Lab 3</string>
+               <string>Sector</string>
               </property>
               <property name="checked">
                <bool>false</bool>
@@ -86,6 +130,54 @@
             </item>
            </layout>
           </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QCheckBox" name="xCheck">
+              <property name="text">
+               <string>x-data</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="yCheck">
+              <property name="text">
+               <string>y-data</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QCheckBox" name="xAxis">
+              <property name="text">
+               <string>x-axis</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="yAxis">
+              <property name="text">
+               <string>y-axis</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+         <zorder></zorder>
+         <zorder>horizontalLayoutWidget_2</zorder>
+         <zorder>horizontalLayoutWidget_3</zorder>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="lab2_groupBox">
+         <property name="title">
+          <string>Lab</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <layout class="QGridLayout" name="gridLayout_6">
             <item row="1" column="1">
@@ -128,22 +220,6 @@
               </property>
               <property name="value">
                <number>50</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QSlider" name="PN">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>15</number>
-              </property>
-              <property name="value">
-               <number>1</number>
               </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -220,13 +296,29 @@
               </property>
              </widget>
             </item>
+            <item row="3" column="1">
+             <widget class="QSlider" name="PN">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>15</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_6">
+        <widget class="QGroupBox" name="timer_groupBox">
          <property name="title">
           <string>Timer</string>
          </property>
@@ -276,7 +368,7 @@ speed</string>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_5">
+        <widget class="QGroupBox" name="form_groupBox">
          <property name="title">
           <string>Formation</string>
          </property>
@@ -351,7 +443,7 @@ Number</string>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_4">
+        <widget class="QGroupBox" name="place_groupBox">
          <property name="title">
           <string>Placing</string>
          </property>
@@ -444,22 +536,6 @@ Width</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QSlider" name="Width">
-              <property name="minimum">
-               <number>50</number>
-              </property>
-              <property name="maximum">
-               <number>500</number>
-              </property>
-              <property name="value">
-               <number>100</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="2">
              <widget class="QPushButton" name="addWidth">
               <property name="text">
@@ -500,19 +576,35 @@ Width</string>
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QSlider" name="Width">
+              <property name="minimum">
+               <number>50</number>
+              </property>
+              <property name="maximum">
+               <number>500</number>
+              </property>
+              <property name="value">
+               <number>100</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="color_groupBox">
          <property name="title">
           <string>Colors</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
           <item>
-           <widget class="QGroupBox" name="groupBox_2">
+           <widget class="QGroupBox" name="back_groupBox">
             <property name="title">
              <string>Background</string>
             </property>
@@ -615,7 +707,7 @@ Width</string>
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="groupBox_3">
+           <widget class="QGroupBox" name="fore_groupBox">
             <property name="title">
              <string>Foreground</string>
             </property>

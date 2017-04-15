@@ -3,10 +3,19 @@
 #include "Point.hpp"
 #include <qlist.h>
 
+typedef unsigned int GLenum;
+
+enum class VertexConnectionType {
+	Points, Lines, LineStrip, LineLoop, Triangles, TriangleStrip, TriangleFan, Quads, QuadStrip, Polygon
+};
+GLenum _enumSwitch(VertexConnectionType e);
+
 class SimpleElement : public AbstractElement {
 protected:
 	QList<Point> m_data;
+	VertexConnectionType m_connection;
 public:
+	SimpleElement(VertexConnectionType connection = VertexConnectionType::LineLoop) : m_connection(connection) {}
 	virtual size_t getSize() const override {
 		return m_data.size() * Point::dimentions();
 	}
@@ -15,6 +24,9 @@ public:
 	}
 	virtual size_t getElementsNumber() const override {
 		return 1;
+	}
+	virtual GLenum getConnection() const {
+		return _enumSwitch(m_connection);
 	}
 
 	QList<Point>& operator*() {

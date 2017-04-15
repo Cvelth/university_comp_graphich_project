@@ -25,6 +25,7 @@ private slots:
 	void lab1Slot();
 	void lab2Slot();
 	void lab3Slot();
+	void lab4Slot();
 
 public slots:
 	void show();
