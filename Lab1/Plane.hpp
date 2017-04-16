@@ -18,6 +18,10 @@ public:
 		return m_t;
 	}
 
+	inline Point getAverage() const {
+		return (m_f + m_s + m_t) / 3.f;
+	}
+
 	inline Point getNormal() const {
 		return (m_t - m_f) * (m_s - m_f);
 	}

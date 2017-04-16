@@ -55,9 +55,7 @@ private:
 	bool isMouseLocked;
 	bool useNormals;
 
-	QMatrix4x4 rotation;
-	QMatrix4x4 lookMatrix;
-	
+	QMatrix4x4 rotation;	
 protected:
 	Point cameraPos;
 	Point lookPoint;

@@ -293,7 +293,7 @@ void Canvas::removeMovementHolder() {
 }
 
 bool Canvas::checkCullFacing(Plane & p) {
-	return (-cameraPos ^ (lookMatrix * p).getNormal()) < 0.f;
+	return ((p.getAverage() - cameraPos) ^ p.getNormal()) <= 0.f;
 }
 
 bool Canvas::checkCullFacingWithRotation(Plane & p) {
@@ -472,7 +472,6 @@ void Canvas::lookAtNull() {
 
 void Canvas::updateLookAt() {
 	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
-	lookMatrix = m;
 
 	glUseProgram(program);
 	glUniformMatrix4fv(locs.lookAtMatrixLoc, 1, GL_FALSE, m.data());
