@@ -163,12 +163,21 @@
     <ClInclude Include="Plane.hpp">
       <Filter>Elements\Points</Filter>
     </ClInclude>
+    <ClInclude Include="Lab7Primitive.hpp">
+      <Filter>Elements\CustomElements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="FragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="VertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="LightVertexShader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="LightFragmentShader.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

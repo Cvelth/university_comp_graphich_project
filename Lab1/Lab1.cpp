@@ -82,6 +82,7 @@ void Lab1::connectGUI() {
 	connect(ui.centerButton, &QRadioButton::clicked, c, &Canvas::centerSlot);
 
 	connect(ui.resetCamera, &QPushButton::clicked, c, &Canvas::resetCamera);
+	connect(ui.resetLight, &QPushButton::clicked, c, &Canvas::resetLight);
 	connect(ui.lookAtNull, &QPushButton::clicked, c, &Canvas::lookAtNull);
 }
 
@@ -217,7 +218,27 @@ void Lab1::lab6Slot() {
 	c->createLab6Primitive();
 }
 
-void Lab1::lab7Slot() {}
+void Lab1::lab7Slot() {
+	ui.lPA->hide();
+	ui.lPB->hide();
+	ui.lPR->hide();
+	ui.lPN->hide();
+
+	ui.PA->hide();
+	ui.PB->hide();
+	ui.PR->hide();
+	ui.PN->hide();
+
+	ui.addPA->hide();
+	ui.addPB->hide();
+	ui.addPR->hide();
+	ui.addPN->hide();
+
+	ui.lab4_groupBox->hide();
+	ui.form_groupBox->show();
+
+	c->createLab7Primitive();
+}
 
 void Lab1::runMovementHolder(bool b) {
 	m->run(b);
@@ -268,6 +289,9 @@ void Lab1::eventSlot() {
 	else if (ui.lab6->isChecked()) {
 		//Nothing to do.
 		//Lab6 primitive is static.
+	} else if (ui.lab7->isChecked()) {
+		//Nothing to do.
+		//Lab7 primitive is static.
 	}
 }
 

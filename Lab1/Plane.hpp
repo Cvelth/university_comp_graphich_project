@@ -26,6 +26,10 @@ public:
 		return (m_t - m_f) * (m_s - m_f);
 	}
 
+	inline Point normal() const {
+		return getNormal().normalize();
+	}
+
 	friend Plane operator*(const QMatrix4x4&, const Plane&);
 	friend Plane operator*(const Plane&, const QMatrix4x4&);
 protected:

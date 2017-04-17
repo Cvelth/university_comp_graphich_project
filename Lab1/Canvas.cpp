@@ -4,6 +4,7 @@
 #include "Lab3Primitive.hpp"
 #include "Lab4Primitives.hpp"
 #include "Lab6Primitive.hpp"
+#include "Lab7Primitive.hpp"
 #include "SquareCircle.h"
 #include <qevent.h>
 #include "MovementHolder.hpp"
@@ -36,21 +37,23 @@ void Canvas::initializeGL() {
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
 	glEnableVertexAttribArray(0);
-
+	
 	createSquareCircle();
 }
 void Canvas::resizeGL(int w, int h) {
 	glViewport(0, 0, w, h);
 	QMatrix4x4 projection;
 	projection.perspective(60, float(w) / h, 0.01f, 100.f);
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.projectionMatrixLoc, 1, GL_FALSE, projection.data());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.projectionMatrixLoc, 1, GL_FALSE, projection.data());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.projectionMatrixLoc, 1, GL_FALSE, projection.data());
 	updateLookAt();
 }
 void Canvas::paintGL() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(program);
+	glUseProgram(currentProgram);
 	if (useNormals)
 		drawElement(elementN, coordinates);
 	else
@@ -84,29 +87,59 @@ bool Canvas::eventFilter(QObject * obj, QEvent * event) {
 			case Qt::Key::Key_Up:
 			case Qt::Key::Key_W:
 				cameraPos += lookPoint * 0.2f;
+				updateLookAt();
 				break;
 			case Qt::Key::Key_Down:
 			case Qt::Key::Key_S:
 				cameraPos -= lookPoint * 0.2f;
+				updateLookAt();
 				break;
 			case Qt::Key::Key_Left:
 			case Qt::Key::Key_A:
 				cameraPos -= lookPoint * upVector * 0.2f;
+				updateLookAt();
 				break;
 			case Qt::Key::Key_Right:
 			case Qt::Key::Key_D:
 				cameraPos += lookPoint * upVector * 0.2f;
+				updateLookAt();
 				break;
 			case Qt::Key_Shift:
 			case Qt::Key::Key_E:
 				cameraPos += upVector * 0.2f;
+				updateLookAt();
 				break;
 			case Qt::Key_Control:
 			case Qt::Key::Key_Q:
 				cameraPos -= upVector * 0.2f;
+				updateLookAt();
+				break;
+
+			case Qt::Key_2:
+				light -= Point(0.f, 0.2f, 0.f);
+				updateLight();
+				break;
+			case Qt::Key_8:
+				light += Point(0.f, 0.2f, 0.f);
+				updateLight();
+				break;
+			case Qt::Key_4:
+				light -= Point(0.2f, 0.f, 0.f);
+				updateLight();
+				break;
+			case Qt::Key_6:
+				light += Point(0.2f, 0.f, 0.f);
+				updateLight();
+				break;
+			case Qt::Key_3:
+				light -= Point(0.f, 0.f, 0.2f);
+				updateLight();
+				break;
+			case Qt::Key_9:
+				light += Point(0.f, 0.f, 0.2f);
+				updateLight();
 				break;
 		}
-		updateLookAt();
 		return true;
 	} else if (event->type() == QEvent::Wheel && isMouseLocked) {
 		if (static_cast<QWheelEvent*>(event)->delta() < 0)
@@ -126,11 +159,16 @@ GLuint* Canvas::generateBuffers(size_t n) {
 }
 
 void Canvas::linkPrograms() {
-	GLuint f = readShader(GL_FRAGMENT_SHADER, "FragmentShader.glsl");
-	GLuint v = readShader(GL_VERTEX_SHADER, "VertexShader.glsl");
+	programLab1 = makeProgram({readShader(GL_FRAGMENT_SHADER, "FragmentShader.glsl"),
+							   readShader(GL_VERTEX_SHADER, "VertexShader.glsl")});
+	locs1 = getShaderUniformLocs(programLab1);
 
-	program = makeProgram({f, v});
-	locs = getShaderUniformLocs();
+	programLab7 = makeProgram({readShader(GL_FRAGMENT_SHADER, "LightFragmentShader.glsl"), 
+							   readShader(GL_VERTEX_SHADER, "LightVertexShader.glsl")});
+	locs7 = getShaderUniformLocs(programLab7);
+
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 }
 GLuint Canvas::makeProgram(std::initializer_list<GLuint> shaders) {
 	GLuint program = glCreateProgram();
@@ -189,11 +227,12 @@ std::string Canvas::readFile(std::string fileName) {
 	);
 }
 
-UniformLocations Canvas::getShaderUniformLocs() {
+UniformLocations Canvas::getShaderUniformLocs(GLuint program) {
 	UniformLocations t_locs;
 	t_locs.projectionMatrixLoc = glGetUniformLocation(program, "projectionMatrix");
 	t_locs.lookAtMatrixLoc = glGetUniformLocation(program, "lookAtMatrix");
 	t_locs.cameraLoc = glGetUniformLocation(program, "camera");
+	t_locs.lightLoc = glGetUniformLocation(program, "lightPos");
 	t_locs.rotationSceneMatrixLoc = glGetUniformLocation(program, "rotationSceneMatrix");
 	t_locs.translationMatrixLoc = glGetUniformLocation(program, "translationMatrix");
 	t_locs.rotationElementMatrixLoc = glGetUniformLocation(program, "rotationElementMatrix");
@@ -229,6 +268,24 @@ void Canvas::sendElement(SimpleElement *el, GLuint buffer) {
 	delete[] res;
 }
 
+void Canvas::sendElement(SimpleNormalElement * el, GLuint buffer) {
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	float* res = new float[el->getSize() * 2];
+	size_t i = 0;
+	for (Point p : **el) {
+		res[i++] = p.x();
+		res[i++] = p.y();
+		res[i++] = p.z();
+		res[i++] = el->normal().x();
+		res[i++] = el->normal().y();
+		res[i++] = el->normal().z();
+	}
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * el->getSize() * 2,
+				 res, GL_DYNAMIC_DRAW);
+	delete[] res;
+}
+
 void Canvas::sendElement(SimpleElement *el) {
 	sendElement(el, buffers[0]);
 }
@@ -239,17 +296,29 @@ void Canvas::sendElement(ComplexElement *el) {
 		sendElement(se, buffers[i++]);
 }
 
-void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+void Canvas::sendElement(ComplexNormalElement * el) {
+	size_t i = 0;
+	for (auto se : **el)
+		sendElement((SimpleNormalElement*)se, buffers[i++]);
+}
 
+void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	QMatrix4x4 matrix;
 	matrix.translate(x, y);
 	if (isMovementHolderInserted) {
 		auto p = insertedMovementHolder->getPos();
 		matrix.translate(p.x(), p.y(), p.z());
 	}
-	glUniformMatrix4fv(locs.translationMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(currentProgram);
+	glUniformMatrix4fv(currentLocs->translationMatrixLoc, 1, GL_FALSE, matrix.data());
+
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	if (currentProgram == programLab1) {
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+	} else if (currentProgram == programLab7) {
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(sizeof(float) * 3));
+	}
 	glDrawArrays(el->getConnection(), 0, el->getNumber());
 }
 void Canvas::drawElement(SimpleElement *el, float x, float y) {
@@ -293,7 +362,7 @@ void Canvas::removeMovementHolder() {
 }
 
 bool Canvas::checkCullFacing(Plane & p) {
-	return ((p.getAverage() - cameraPos) ^ p.getNormal()) <= 0.f;
+	return (-cameraPos ^ p.getNormal()) <= 0.f;
 }
 
 bool Canvas::checkCullFacingWithRotation(Plane & p) {
@@ -307,6 +376,8 @@ QVector3D operator!(const Point& p) {
 void Canvas::createSquareCircle() {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new SquareCircle(0.f, 0.f, 1.f, 90);
 	sendData();
@@ -315,6 +386,8 @@ void Canvas::createSquareCircle() {
 void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new Lab2Primitive(a, b, r, n);
 	sendData();
@@ -324,6 +397,8 @@ void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 void Canvas::createLab3Primitive(size_t n) {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new Lab3Primitive(n);
 	sendData();
@@ -333,6 +408,8 @@ void Canvas::createLab3Primitive(size_t n) {
 void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new Lab4LinearPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -342,6 +419,8 @@ void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new Lab4ColumnPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -351,6 +430,8 @@ void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	if (element) delete element;
 	element = new Lab4SectorPrimitive(a, b, n, x, y, xa, ya);
 	sendData();
@@ -360,14 +441,29 @@ void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab5Primitive(AbstractMovementHolder* mh) {
 	createLab3Primitive(15);
 	useNormals = false;
+	currentProgram = programLab1;
+	currentLocs = &locs1;
 	insertMovementHolder(mh);
 }
 
 void Canvas::createLab6Primitive() {
 	removeMovementHolder();
 	useNormals = true;
+	currentProgram = programLab7;
+	currentLocs = &locs7;
 	if (elementN) delete elementN;
 	elementN = new Lab6Primitive();
+	sendData();
+	update();
+}
+
+void Canvas::createLab7Primitive() {
+	removeMovementHolder();
+	useNormals = true;
+	currentProgram = programLab7;
+	currentLocs = &locs7;
+	if (elementN) delete elementN;
+	elementN = new Lab7Primitive();
 	sendData();
 	update();
 }
@@ -408,15 +504,19 @@ void Canvas::setBackgroundA(size_t i) {
 void Canvas::setSize(size_t i) {
 	QMatrix4x4 matrix;
 	matrix.scale(float(i) / 1000);
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.scalingElementMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.scalingElementMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.scalingElementMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setScale(size_t i) {
 	QMatrix4x4 matrix;
 	matrix.scale(float(i) / 2000);
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.scalingSceneMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.scalingSceneMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.scalingSceneMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setElementAngle(size_t x, size_t y, size_t z) {
@@ -425,15 +525,19 @@ void Canvas::setElementAngle(size_t x, size_t y, size_t z) {
 	matrix.rotate(y, 0.f, 1.f, 0.f);
 	matrix.rotate(z, 0.f, 0.f, 1.f);
 	rotation = matrix;
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.rotationElementMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.rotationElementMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.rotationElementMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setSceneAngle(size_t i) {
 	QMatrix4x4 matrix;
 	matrix.rotate(i, 0.f, 0.f, 1.f);
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.rotationSceneMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.rotationSceneMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.rotationSceneMatrixLoc, 1, GL_FALSE, matrix.data());
 	update();
 }
 void Canvas::setLineWidth(size_t i) {
@@ -462,31 +566,52 @@ void Canvas::resetCamera() {
 	cameraPos = Point(0, 0, -2);
 	lookPoint = Point(0, 0, 1);
 	upVector = Point(0, 1, 0);
-	update();
+	light = Point(0.f, 0.f, 0.f);
+	if (element) updateLight();
+	if (element) updateLookAt();
+}
+
+void Canvas::resetLight() {
+	light = cameraPos;
+	if (element) updateLight();
 }
 
 void Canvas::lookAtNull() {
 	lookPoint = -cameraPos;
-	update();
+	if (element) updateLookAt();
 }
 
 void Canvas::updateLookAt() {
-	QMatrix4x4 m; m.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
+	QMatrix4x4 matrix;
+	matrix.lookAt(!cameraPos, !(lookPoint + cameraPos), !upVector);
 
-	glUseProgram(program);
-	glUniformMatrix4fv(locs.lookAtMatrixLoc, 1, GL_FALSE, m.data());
-	glUniform3f(locs.cameraLoc, cameraPos.x(), cameraPos.y(), cameraPos.z());
+	glUseProgram(programLab1);
+	glUniformMatrix4fv(locs1.lookAtMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUniform3f(locs1.cameraLoc, cameraPos.x(), cameraPos.y(), cameraPos.z());
+	glUseProgram(programLab7);
+	glUniformMatrix4fv(locs7.lookAtMatrixLoc, 1, GL_FALSE, matrix.data());
+	glUniform3f(locs7.cameraLoc, cameraPos.x(), cameraPos.y(), cameraPos.z());
 
 	update();
 }
+void Canvas::updateLight() {
+	glUseProgram(programLab7);
+	glUniform3f(locs7.lightLoc, light.x(), light.y(), light.z());
+	update();
+}
 void Canvas::updateForegroundColor() {
-	glUseProgram(program);
-	glUniform4f(locs.drawingColorLoc,
+	glUseProgram(programLab1);
+	glUniform4f(locs1.drawingColorLoc,
+				foreground.r, foreground.g, foreground.b, foreground.a);
+	glUseProgram(programLab7);
+	glUniform4f(locs7.drawingColorLoc,
 				foreground.r, foreground.g, foreground.b, foreground.a);
 	update();
 }
 void Canvas::updateBackgroundColor() {
-	glUseProgram(program);
+	glUseProgram(programLab1);
+	glClearColor(background.r, background.g, background.b, background.a);
+	glUseProgram(programLab7);
 	glClearColor(background.r, background.g, background.b, background.a);
 	update();
 }

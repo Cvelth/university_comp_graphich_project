@@ -28,6 +28,7 @@ struct UniformLocations {
 
 		lookAtMatrixLoc,
 		cameraLoc,
+		lightLoc,
 
 		translationMatrixLoc,
 		rotationSceneMatrixLoc,
@@ -47,7 +48,6 @@ private:
 	Color foreground, background;
 
 	GLuint* buffers;
-	UniformLocations locs;
 	CoordinatesHolder coordinates;
 	ComplexElement *element;
 	ComplexNormalElement *elementN;
@@ -61,7 +61,15 @@ protected:
 	Point lookPoint;
 	Point upVector;
 
-	GLuint program;
+	Point light;
+
+	GLuint currentProgram;
+	UniformLocations *currentLocs;
+
+	GLuint programLab1;
+	UniformLocations locs1;
+	GLuint programLab7;
+	UniformLocations locs7;
 
 	AbstractMovementHolder* insertedMovementHolder;
 	bool isMovementHolderInserted;
@@ -80,12 +88,14 @@ protected:
 	GLuint makeProgram(std::initializer_list<GLuint> shaders);
 	GLuint readShader(GLenum type, std::string fileName);
 	std::string readFile(std::string fileName);
-	UniformLocations getShaderUniformLocs();
+	UniformLocations getShaderUniformLocs(GLuint program);
 
 	virtual void sendData();
 	virtual void sendElement(SimpleElement* el);
 	virtual void sendElement(SimpleElement* el, GLuint buffer);
+	virtual void sendElement(SimpleNormalElement* el, GLuint buffer);
 	virtual void sendElement(ComplexElement* el);
+	virtual void sendElement(ComplexNormalElement* el);
 
 	virtual void drawElement(SimpleElement* el, GLuint buffer, float x = 0.f, float y = 0.f);
 	virtual void drawElement(SimpleElement* el, float x = 0.f, float y = 0.f);
@@ -112,6 +122,7 @@ public slots :
 	void createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya);
 	void createLab5Primitive(AbstractMovementHolder* mh);
 	void createLab6Primitive();
+	void createLab7Primitive();
 
 	void setForegroundR(size_t i);
 	void setForegroundG(size_t i);
@@ -134,9 +145,11 @@ public slots :
 	void centerSlot();
 
 	void resetCamera();
+	void resetLight();
 	void lookAtNull();
 
 	void updateLookAt();
+	void updateLight();
 	void updateForegroundColor();
 	void updateBackgroundColor();
 

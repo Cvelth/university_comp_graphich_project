@@ -7,8 +7,4 @@ protected:
 public:
 	ComplexNormalElement() : ComplexElement() {}
 	ComplexNormalElement(SimpleNormalElement& el) : ComplexElement(el) {}
-
-	//const QList<SimpleNormalElement*> & operator*() {
-	//	return m_data;
-	//}
 };

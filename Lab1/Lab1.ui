@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1133</width>
-    <height>1075</height>
+    <height>1111</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -695,7 +695,7 @@ Z Angle</string>
          <property name="title">
           <string>Colors</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0">
+         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0">
           <item>
            <widget class="QGroupBox" name="back_groupBox">
             <property name="title">
@@ -942,7 +942,14 @@ Z Angle</string>
           <item>
            <widget class="QPushButton" name="resetCamera">
             <property name="text">
-             <string>Reset Camera</string>
+             <string>Reset Camera and light</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetLight">
+            <property name="text">
+             <string>Light to camera</string>
             </property>
            </widget>
           </item>

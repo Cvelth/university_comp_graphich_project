@@ -140,6 +140,7 @@ public:
     QPushButton *addFA;
     QPushButton *lookAtNull;
     QPushButton *resetCamera;
+    QPushButton *resetLight;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_9;
     QSlider *Scale;
@@ -149,7 +150,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(1133, 1075);
+        Lab1Class->resize(1133, 1111);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -797,6 +798,11 @@ public:
 
         verticalLayout_2->addWidget(resetCamera);
 
+        resetLight = new QPushButton(color_groupBox);
+        resetLight->setObjectName(QStringLiteral("resetLight"));
+
+        verticalLayout_2->addWidget(resetLight);
+
 
         verticalLayout->addWidget(color_groupBox);
 
@@ -916,7 +922,8 @@ public:
         addFB->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         addFA->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
         lookAtNull->setText(QApplication::translate("Lab1Class", "Look at (0;0;0)", Q_NULLPTR));
-        resetCamera->setText(QApplication::translate("Lab1Class", "Reset Camera", Q_NULLPTR));
+        resetCamera->setText(QApplication::translate("Lab1Class", "Reset Camera and light", Q_NULLPTR));
+        resetLight->setText(QApplication::translate("Lab1Class", "Light to camera", Q_NULLPTR));
         label_9->setText(QApplication::translate("Lab1Class", "Scene\n"
 "scaling", Q_NULLPTR));
         addScale->setText(QApplication::translate("Lab1Class", "Add", Q_NULLPTR));
