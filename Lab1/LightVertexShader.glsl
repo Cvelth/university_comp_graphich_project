@@ -24,10 +24,7 @@ void main() {
 		* translationMatrix * rotationElementMatrix * scalingElementMatrix;
 
 	thePosition = vec3(transformation * vec4(position, 1.0));
-	theNormal = normalize(vec3(rotationSceneMatrix * rotationElementMatrix * vec4(normal, 0.0)));
+	theNormal = normal;
 
 	gl_Position = projectionMatrix * lookAtMatrix * vec4(thePosition, 1.0);
-
-	//float alpha = drawingColor[3] / length(gl_Position - vec4(camera, 0.0)) * 12 - drawingColor[3];
-	//theColor = vec4(vec3(drawingColor) * ambientCoefficient + background, alpha);
 }
