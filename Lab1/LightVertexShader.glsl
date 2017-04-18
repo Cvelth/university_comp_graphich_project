@@ -5,6 +5,7 @@ in layout(location = 1) vec3 normal;
 
 out vec3 thePosition;
 out vec3 theNormal;
+out float light;
 
 uniform vec4 drawingColor;
 uniform mat4 translationMatrix;
@@ -23,8 +24,12 @@ void main() {
 	mat4 transformation = rotationSceneMatrix * scalingSceneMatrix
 		* translationMatrix * rotationElementMatrix * scalingElementMatrix;
 
-	thePosition = vec3(transformation * vec4(position, 1.0));
-	theNormal = normalize(normal);
+	thePosition = mat3(transformation) * position;
+	theNormal = normalize(/*mat3(transformation) */ normal);
 
-	gl_Position = projectionMatrix * lookAtMatrix * vec4(thePosition, 1.0);
+	float ambientCoefficient = 0.1f;
+	vec3 lightVec = normalize(lightPos - thePosition);
+	light = max(dot(lightVec, theNormal), 0);// +background * ambientCoefficient;
+
+	gl_Position = projectionMatrix * lookAtMatrix * transformation * vec4(position, 1.0);
 }

@@ -32,9 +32,6 @@ void Canvas::initializeGL() {
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
-	glEnable(GL_POLYGON_SMOOTH);
-	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-
 	glEnableVertexAttribArray(0);
 	
 	createSquareCircle();
@@ -566,7 +563,7 @@ void Canvas::resetCamera() {
 	cameraPos = Point(0, 0, -2);
 	lookPoint = Point(0, 0, 2);
 	upVector = Point(0, 1, 0);
-	light = cameraPos - (0.5, 0, 0);
+	light = cameraPos + Point(0.5, 0, 0);
 	if (element) updateLight();
 	if (element) updateLookAt();
 }
