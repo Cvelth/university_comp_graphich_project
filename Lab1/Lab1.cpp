@@ -21,6 +21,7 @@ Lab1::Lab1(QWidget *parent)
 	ui.lPR->hide();		ui.PR->hide();	  ui.addPR->hide();
 	ui.lPN->hide();		ui.PN->hide();	  ui.addPN->hide();
 
+	ui.lab2_groupBox->hide();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -102,6 +103,7 @@ void Lab1::lab1Slot() {
 	ui.addPR->hide();
 	ui.addPN->hide();
 
+	ui.lab2_groupBox->hide();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -124,6 +126,7 @@ void Lab1::lab2Slot() {
 	ui.addPR->show();
 	ui.addPN->show();
 
+	ui.lab2_groupBox->show();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -146,6 +149,7 @@ void Lab1::lab3Slot() {
 	ui.addPR->hide();
 	ui.addPN->show();
 
+	ui.lab2_groupBox->show();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -168,6 +172,7 @@ void Lab1::lab4Slot() {
 	ui.addPR->hide();
 	ui.addPN->show();
 
+	ui.lab2_groupBox->show();
 	ui.lab4_groupBox->show();
 	ui.form_groupBox->hide();
 
@@ -190,6 +195,7 @@ void Lab1::lab5Slot() {
 	ui.addPR->show();
 	ui.addPN->show();
 
+	ui.lab2_groupBox->show();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -212,6 +218,7 @@ void Lab1::lab6Slot() {
 	ui.addPR->hide();
 	ui.addPN->hide();
 
+	ui.lab2_groupBox->hide();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 
@@ -234,6 +241,7 @@ void Lab1::lab7Slot() {
 	ui.addPR->hide();
 	ui.addPN->hide();
 
+	ui.lab2_groupBox->hide();
 	ui.lab4_groupBox->hide();
 	ui.form_groupBox->show();
 

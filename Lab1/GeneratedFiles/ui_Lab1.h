@@ -21,6 +21,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QVBoxLayout>
@@ -37,6 +38,9 @@ public:
     QHBoxLayout *horizontalLayout;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents_2;
+    QVBoxLayout *verticalLayout_8;
     QHBoxLayout *horizontalLayout_8;
     QRadioButton *lab1;
     QRadioButton *lab2;
@@ -150,7 +154,7 @@ public:
     {
         if (Lab1Class->objectName().isEmpty())
             Lab1Class->setObjectName(QStringLiteral("Lab1Class"));
-        Lab1Class->resize(1133, 1111);
+        Lab1Class->resize(713, 976);
         verticalLayout_3 = new QVBoxLayout(Lab1Class);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -182,55 +186,73 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        scrollArea = new QScrollArea(verticalLayoutWidget);
+        scrollArea->setObjectName(QStringLiteral("scrollArea"));
+        scrollArea->setMinimumSize(QSize(400, 0));
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        scrollArea->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+        scrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents_2 = new QWidget();
+        scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 666, 1017));
+        verticalLayout_8 = new QVBoxLayout(scrollAreaWidgetContents_2);
+        verticalLayout_8->setSpacing(6);
+        verticalLayout_8->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_8->setObjectName(QStringLiteral("verticalLayout_8"));
         horizontalLayout_8 = new QHBoxLayout();
         horizontalLayout_8->setSpacing(6);
         horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
-        lab1 = new QRadioButton(verticalLayoutWidget);
+        lab1 = new QRadioButton(scrollAreaWidgetContents_2);
         lab1->setObjectName(QStringLiteral("lab1"));
         lab1->setChecked(true);
 
         horizontalLayout_8->addWidget(lab1);
 
-        lab2 = new QRadioButton(verticalLayoutWidget);
+        lab2 = new QRadioButton(scrollAreaWidgetContents_2);
         lab2->setObjectName(QStringLiteral("lab2"));
         lab2->setChecked(false);
 
         horizontalLayout_8->addWidget(lab2);
 
-        lab3 = new QRadioButton(verticalLayoutWidget);
+        lab3 = new QRadioButton(scrollAreaWidgetContents_2);
         lab3->setObjectName(QStringLiteral("lab3"));
         lab3->setChecked(false);
 
         horizontalLayout_8->addWidget(lab3);
 
-        lab4 = new QRadioButton(verticalLayoutWidget);
+        lab4 = new QRadioButton(scrollAreaWidgetContents_2);
         lab4->setObjectName(QStringLiteral("lab4"));
         lab4->setChecked(false);
 
         horizontalLayout_8->addWidget(lab4);
 
-        lab5 = new QRadioButton(verticalLayoutWidget);
+        lab5 = new QRadioButton(scrollAreaWidgetContents_2);
         lab5->setObjectName(QStringLiteral("lab5"));
 
         horizontalLayout_8->addWidget(lab5);
 
-        lab6 = new QRadioButton(verticalLayoutWidget);
+        lab6 = new QRadioButton(scrollAreaWidgetContents_2);
         lab6->setObjectName(QStringLiteral("lab6"));
         lab6->setChecked(false);
 
         horizontalLayout_8->addWidget(lab6);
 
-        lab7 = new QRadioButton(verticalLayoutWidget);
+        lab7 = new QRadioButton(scrollAreaWidgetContents_2);
         lab7->setObjectName(QStringLiteral("lab7"));
         lab7->setChecked(false);
 
         horizontalLayout_8->addWidget(lab7);
 
 
-        verticalLayout->addLayout(horizontalLayout_8);
+        verticalLayout_8->addLayout(horizontalLayout_8);
 
-        lab4_groupBox = new QGroupBox(verticalLayoutWidget);
+        lab4_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         lab4_groupBox->setObjectName(QStringLiteral("lab4_groupBox"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Minimum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(lab4_groupBox->sizePolicy().hasHeightForWidth());
+        lab4_groupBox->setSizePolicy(sizePolicy1);
         verticalLayout_7 = new QVBoxLayout(lab4_groupBox);
         verticalLayout_7->setSpacing(6);
         verticalLayout_7->setContentsMargins(11, 11, 11, 11);
@@ -292,10 +314,12 @@ public:
         verticalLayout_7->addLayout(horizontalLayout_11);
 
 
-        verticalLayout->addWidget(lab4_groupBox);
+        verticalLayout_8->addWidget(lab4_groupBox);
 
-        lab2_groupBox = new QGroupBox(verticalLayoutWidget);
+        lab2_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         lab2_groupBox->setObjectName(QStringLiteral("lab2_groupBox"));
+        sizePolicy1.setHeightForWidth(lab2_groupBox->sizePolicy().hasHeightForWidth());
+        lab2_groupBox->setSizePolicy(sizePolicy1);
         verticalLayout_6 = new QVBoxLayout(lab2_groupBox);
         verticalLayout_6->setSpacing(6);
         verticalLayout_6->setContentsMargins(11, 11, 11, 11);
@@ -387,10 +411,12 @@ public:
         verticalLayout_6->addLayout(gridLayout_6);
 
 
-        verticalLayout->addWidget(lab2_groupBox);
+        verticalLayout_8->addWidget(lab2_groupBox);
 
-        timer_groupBox = new QGroupBox(verticalLayoutWidget);
+        timer_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         timer_groupBox->setObjectName(QStringLiteral("timer_groupBox"));
+        sizePolicy1.setHeightForWidth(timer_groupBox->sizePolicy().hasHeightForWidth());
+        timer_groupBox->setSizePolicy(sizePolicy1);
         verticalLayout_5 = new QVBoxLayout(timer_groupBox);
         verticalLayout_5->setSpacing(6);
         verticalLayout_5->setContentsMargins(11, 11, 11, 11);
@@ -423,10 +449,12 @@ public:
         verticalLayout_5->addWidget(runButton);
 
 
-        verticalLayout->addWidget(timer_groupBox);
+        verticalLayout_8->addWidget(timer_groupBox);
 
-        form_groupBox = new QGroupBox(verticalLayoutWidget);
+        form_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         form_groupBox->setObjectName(QStringLiteral("form_groupBox"));
+        sizePolicy1.setHeightForWidth(form_groupBox->sizePolicy().hasHeightForWidth());
+        form_groupBox->setSizePolicy(sizePolicy1);
         verticalLayout_4 = new QVBoxLayout(form_groupBox);
         verticalLayout_4->setSpacing(6);
         verticalLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -480,10 +508,12 @@ public:
         verticalLayout_4->addLayout(gridLayout_4);
 
 
-        verticalLayout->addWidget(form_groupBox);
+        verticalLayout_8->addWidget(form_groupBox);
 
-        place_groupBox = new QGroupBox(verticalLayoutWidget);
+        place_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         place_groupBox->setObjectName(QStringLiteral("place_groupBox"));
+        sizePolicy1.setHeightForWidth(place_groupBox->sizePolicy().hasHeightForWidth());
+        place_groupBox->setSizePolicy(sizePolicy1);
         horizontalLayout_3 = new QHBoxLayout(place_groupBox);
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -617,10 +647,12 @@ public:
         horizontalLayout_3->addLayout(gridLayout_3);
 
 
-        verticalLayout->addWidget(place_groupBox);
+        verticalLayout_8->addWidget(place_groupBox);
 
-        color_groupBox = new QGroupBox(verticalLayoutWidget);
+        color_groupBox = new QGroupBox(scrollAreaWidgetContents_2);
         color_groupBox->setObjectName(QStringLiteral("color_groupBox"));
+        sizePolicy1.setHeightForWidth(color_groupBox->sizePolicy().hasHeightForWidth());
+        color_groupBox->setSizePolicy(sizePolicy1);
         verticalLayout_2 = new QVBoxLayout(color_groupBox);
         verticalLayout_2->setSpacing(6);
         verticalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -788,28 +820,29 @@ public:
 
         verticalLayout_2->addWidget(fore_groupBox);
 
-        lookAtNull = new QPushButton(color_groupBox);
+
+        verticalLayout_8->addWidget(color_groupBox);
+
+        scrollArea->setWidget(scrollAreaWidgetContents_2);
+
+        verticalLayout->addWidget(scrollArea);
+
+        lookAtNull = new QPushButton(verticalLayoutWidget);
         lookAtNull->setObjectName(QStringLiteral("lookAtNull"));
 
-        verticalLayout_2->addWidget(lookAtNull);
+        verticalLayout->addWidget(lookAtNull);
 
-        resetCamera = new QPushButton(color_groupBox);
+        resetCamera = new QPushButton(verticalLayoutWidget);
         resetCamera->setObjectName(QStringLiteral("resetCamera"));
 
-        verticalLayout_2->addWidget(resetCamera);
+        verticalLayout->addWidget(resetCamera);
 
-        resetLight = new QPushButton(color_groupBox);
+        resetLight = new QPushButton(verticalLayoutWidget);
         resetLight->setObjectName(QStringLiteral("resetLight"));
 
-        verticalLayout_2->addWidget(resetLight);
+        verticalLayout->addWidget(resetLight);
 
-
-        verticalLayout->addWidget(color_groupBox);
-
-        verticalLayout->setStretch(3, 1);
-        verticalLayout->setStretch(4, 1);
-        verticalLayout->setStretch(5, 2);
-        verticalLayout->setStretch(6, 2);
+        verticalLayout->setStretch(0, 1);
         splitter->addWidget(verticalLayoutWidget);
 
         verticalLayout_3->addWidget(splitter);
@@ -817,6 +850,7 @@ public:
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setSizeConstraint(QLayout::SetMinimumSize);
         label_9 = new QLabel(Lab1Class);
         label_9->setObjectName(QStringLiteral("label_9"));
         label_9->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
@@ -841,6 +875,7 @@ public:
 
         verticalLayout_3->addLayout(horizontalLayout_2);
 
+        verticalLayout_3->setStretch(0, 1);
 
         retranslateUi(Lab1Class);
 
