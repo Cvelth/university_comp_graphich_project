@@ -12,6 +12,6 @@ uniform vec3 background;
 void main() {
 	float ambientCoefficient = 0.1f;
 	vec3 lightVec = normalize(thePosition - lightPos);
-	fColor = vec4(vec3(drawingColor) * clamp(dot(lightVec, theNormal), 0, 1) 
-				+ background * ambientCoefficient, drawingColor[3]);
+	fColor = vec4(vec3(drawingColor) * clamp(dot(lightVec, theNormal), 0, 1)
+				  + background * ambientCoefficient, 1.f);// drawingColor[3]);
 }

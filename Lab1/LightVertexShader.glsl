@@ -24,7 +24,7 @@ void main() {
 		* translationMatrix * rotationElementMatrix * scalingElementMatrix;
 
 	thePosition = vec3(transformation * vec4(position, 1.0));
-	theNormal = normal;
+	theNormal = normalize(normal);
 
 	gl_Position = projectionMatrix * lookAtMatrix * vec4(thePosition, 1.0);
 }

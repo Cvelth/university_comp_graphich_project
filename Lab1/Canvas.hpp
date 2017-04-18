@@ -108,7 +108,7 @@ protected:
 	virtual void removeMovementHolder();
 
 	virtual bool checkCullFacing(Plane& p);
-	virtual bool checkCullFacingWithRotation(Plane& p);
+	virtual bool checkCullFacing(Point& p);
 public:
 	Canvas();
 	virtual ~Canvas();

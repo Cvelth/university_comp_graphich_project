@@ -327,4 +327,5 @@ void Lab1::show(){
 	ui.Speed->setValue(0);
 	
 	ui.centerButton->click();
+	c->resetCamera();
 }

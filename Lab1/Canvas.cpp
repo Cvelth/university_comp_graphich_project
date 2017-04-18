@@ -11,7 +11,6 @@
 
 Canvas::Canvas() : foreground(1.f), background(1.f), element(nullptr), elementN(nullptr), isMouseLocked(false), isMovementHolderInserted(false), useNormals(false) {
 	buffers = new GLuint[1];
-	resetCamera();
 }
 
 Canvas::~Canvas() {
@@ -340,7 +339,8 @@ void Canvas::drawElement(ComplexNormalElement * el, float x, float y) {
 	size_t i = 0;
 	if (el) for (auto se : **el) {
 		auto sne = (SimpleNormalElement*) se;
-		if (checkCullFacingWithRotation(sne->getPlane()))
+		if (checkCullFacing(sne->getPlane()))
+		//if (checkCullFacing(sne->normal().normalize()))
 			drawElement(sne, buffers[i], x, y);
 		i++;
 	}
@@ -361,16 +361,16 @@ void Canvas::removeMovementHolder() {
 	isMovementHolderInserted = false;
 }
 
-bool Canvas::checkCullFacing(Plane & p) {
-	return (-cameraPos ^ p.getNormal()) <= 0.f;
-}
-
-bool Canvas::checkCullFacingWithRotation(Plane & p) {
-	return checkCullFacing(rotation * p);
-}
-
 QVector3D operator!(const Point& p) {
 	return QVector3D(p.x(), p.y(), p.z());
+}
+
+bool Canvas::checkCullFacing(Plane & p) {
+	return (-cameraPos ^ (rotation * p).normal()) <= 0.f;
+}
+
+bool Canvas::checkCullFacing(Point & p) {
+	return QVector4D::dotProduct(-!cameraPos, rotation * p) <= 0.f;
 }
 
 void Canvas::createSquareCircle() {
@@ -564,9 +564,9 @@ void Canvas::centerSlot() {
 
 void Canvas::resetCamera() {
 	cameraPos = Point(0, 0, -2);
-	lookPoint = Point(0, 0, 1);
+	lookPoint = Point(0, 0, 2);
 	upVector = Point(0, 1, 0);
-	light = Point(0.f, 0.f, 0.f);
+	light = cameraPos - (0.5, 0, 0);
 	if (element) updateLight();
 	if (element) updateLookAt();
 }
