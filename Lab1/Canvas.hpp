@@ -55,7 +55,7 @@ private:
 	bool isMouseLocked;
 	bool useNormals;
 
-	QMatrix4x4 rotation;	
+	QMatrix4x4 rotation;
 protected:
 	Point cameraPos;
 	Point lookPoint;
@@ -108,6 +108,7 @@ protected:
 	virtual void removeMovementHolder();
 
 	virtual bool checkCullFacing(Plane& p);
+	virtual bool checkCullFacing(Plane & p, QMatrix4x4 & m);
 	virtual bool checkCullFacing(Point& p);
 public:
 	Canvas();

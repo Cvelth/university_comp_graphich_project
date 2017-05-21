@@ -24,12 +24,11 @@ void main() {
 	mat4 transformation = rotationSceneMatrix * scalingSceneMatrix
 		* translationMatrix * rotationElementMatrix * scalingElementMatrix;
 
-	thePosition = mat3(transformation) * position;
-	theNormal = normalize(/*mat3(transformation) */ normal);
+	thePosition = vec3(transformation * vec4(position, 1.0));
+	theNormal = normalize(transpose(inverse(mat3(transformation))) * normal);
 
-	float ambientCoefficient = 0.1f;
-	vec3 lightVec = normalize(lightPos - thePosition);
-	light = max(dot(lightVec, theNormal), 0);// +background * ambientCoefficient;
+	vec3 lightVec = normalize(/*lightPos*/camera - thePosition);
+	light = max(dot(lightVec, theNormal), 0);
 
 	gl_Position = projectionMatrix * lookAtMatrix * transformation * vec4(position, 1.0);
 }

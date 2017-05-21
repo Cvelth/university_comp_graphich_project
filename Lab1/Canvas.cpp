@@ -308,14 +308,18 @@ void Canvas::drawElement(SimpleElement *el, GLuint buffer, float x, float y) {
 	glUseProgram(currentProgram);
 	glUniformMatrix4fv(currentLocs->translationMatrixLoc, 1, GL_FALSE, matrix.data());
 
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	if (currentProgram == programLab1) {
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
-	} else if (currentProgram == programLab7) {
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*)(sizeof(float) * 3));
+	auto sne = (SimpleNormalElement*) el;
+	if (checkCullFacing(sne->getPlane(), matrix))
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		if (currentProgram == programLab1) {
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+		} else if (currentProgram == programLab7) {
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (GLvoid*) (sizeof(float) * 3));
+		}
+		glDrawArrays(el->getConnection(), 0, el->getNumber());
 	}
-	glDrawArrays(el->getConnection(), 0, el->getNumber());
 }
 void Canvas::drawElement(SimpleElement *el, float x, float y) {
 	drawElement(el, buffers[0], x, y);
@@ -335,10 +339,7 @@ void Canvas::drawElement(ComplexElement * el, CoordinatesHolder c) {
 void Canvas::drawElement(ComplexNormalElement * el, float x, float y) {
 	size_t i = 0;
 	if (el) for (auto se : **el) {
-		auto sne = (SimpleNormalElement*) se;
-		if (checkCullFacing(sne->getPlane()))
-		//if (checkCullFacing(sne->normal().normalize()))
-			drawElement(sne, buffers[i], x, y);
+		drawElement(se, buffers[i], x, y);
 		i++;
 	}
 }
@@ -363,7 +364,11 @@ QVector3D operator!(const Point& p) {
 }
 
 bool Canvas::checkCullFacing(Plane & p) {
-	return (-cameraPos ^ (rotation * p).normal()) <= 0.f;
+	return ((-cameraPos) ^ (rotation * p).normal()) <= 0.f;
+}
+
+bool Canvas::checkCullFacing(Plane & p, QMatrix4x4& m) {
+	return ((-cameraPos + p.getAverage()) ^ (m * rotation * p).normal()) < 0.f;
 }
 
 bool Canvas::checkCullFacing(Point & p) {
@@ -563,7 +568,7 @@ void Canvas::resetCamera() {
 	cameraPos = Point(0, 0, -2);
 	lookPoint = Point(0, 0, 2);
 	upVector = Point(0, 1, 0);
-	light = cameraPos + Point(0.5, 0, 0);
+	light = cameraPos;// +Point(0.5, 0, 0);
 	if (element) updateLight();
 	if (element) updateLookAt();
 }

@@ -11,6 +11,7 @@ uniform vec3 lightPos;
 uniform vec3 background;
 
 void main() {
-	fColor = vec4(vec3(drawingColor) * light, 
+	float ambientCoefficient = 0.1f;
+	fColor = vec4(vec3(drawingColor) * light + background * ambientCoefficient, 
 				  1.f);// drawingColor[3]);
 }
