@@ -23,12 +23,15 @@ void Canvas::initializeGL() {
  	initializeOpenGLFunctions();
 	linkPrograms();
 
+	glEnable(GL_DEPTH_TEST);
+	glLineWidth(1.5f);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-
+	
 	glEnable(GL_POINT_SMOOTH);
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-
+	
 	glEnable(GL_LINE_SMOOTH);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
@@ -39,7 +42,7 @@ void Canvas::initializeGL() {
 void Canvas::resizeGL(int w, int h) {
 	glViewport(0, 0, w, h);
 	QMatrix4x4 projection;
-	projection.perspective(60, float(w) / h, 0.01f, 100.f);
+	projection.perspective(45, float(w) / h, 0.01f, 100.f);
 	glUseProgram(programLab1);
 	glUniformMatrix4fv(locs1.projectionMatrixLoc, 1, GL_FALSE, projection.data());
 	glUseProgram(programLab7);
@@ -48,6 +51,25 @@ void Canvas::resizeGL(int w, int h) {
 }
 void Canvas::paintGL() {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	if (isLab6) {
+
+		glUseProgram(programLab1);
+		glUniform4f(locs1.drawingColorLoc,
+					background.r, background.g, background.b, background.a);
+		glUseProgram(programLab7);
+		glUniform4f(locs7.drawingColorLoc,
+					background.r, background.g, background.b, background.a);
+
+		drawElement(elementB, coordinates);
+
+		glUseProgram(programLab1);
+		glUniform4f(locs1.drawingColorLoc,
+					foreground.r, foreground.g, foreground.b, foreground.a);
+		glUseProgram(programLab7);
+		glUniform4f(locs7.drawingColorLoc,
+					foreground.r, foreground.g, foreground.b, foreground.a);
+	}
 
 	glUseProgram(currentProgram);
 	if (useNormals)
@@ -242,10 +264,14 @@ void Canvas::sendData() {
 	delete[] buffers;
 	if (useNormals) {
 		buffers = generateBuffers(elementN->getElementsNumber());
-		sendElement(elementN);
+		sendElement(buffers, elementN);
 	} else {
 		buffers = generateBuffers(element->getElementsNumber());
 		sendElement(element);
+	}
+	if (isLab6) {
+		buffers2 = generateBuffers(elementB->getElementsNumber());
+		sendElement(buffers2, elementB);
 	}
 }
 
@@ -292,7 +318,7 @@ void Canvas::sendElement(ComplexElement *el) {
 		sendElement(se, buffers[i++]);
 }
 
-void Canvas::sendElement(ComplexNormalElement * el) {
+void Canvas::sendElement(GLuint* buffers, ComplexNormalElement * el) {
 	size_t i = 0;
 	for (auto se : **el)
 		sendElement((SimpleNormalElement*)se, buffers[i++]);
@@ -373,6 +399,7 @@ bool Canvas::checkCullFacing(Point & p) {
 void Canvas::createSquareCircle() {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -383,6 +410,7 @@ void Canvas::createSquareCircle() {
 void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -394,6 +422,7 @@ void Canvas::createLab2Primitive(float a, float b, float r, size_t n) {
 void Canvas::createLab3Primitive(size_t n) {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -405,6 +434,7 @@ void Canvas::createLab3Primitive(size_t n) {
 void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -416,6 +446,7 @@ void Canvas::createLab4LinearPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -427,6 +458,7 @@ void Canvas::createLab4ColumnPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool y, bool xa, bool ya) {
 	removeMovementHolder();
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	if (element) delete element;
@@ -438,6 +470,7 @@ void Canvas::createLab4SectorPrimitive(float a, float b, size_t n, bool x, bool 
 void Canvas::createLab5Primitive(AbstractMovementHolder* mh) {
 	createLab3Primitive(15);
 	useNormals = false;
+	isLab6 = false;
 	currentProgram = programLab1;
 	currentLocs = &locs1;
 	insertMovementHolder(mh);
@@ -446,10 +479,12 @@ void Canvas::createLab5Primitive(AbstractMovementHolder* mh) {
 void Canvas::createLab6Primitive() {
 	removeMovementHolder();
 	useNormals = true;
+	isLab6 = true;
 	currentProgram = programLab7;
 	currentLocs = &locs7;
 	if (elementN) delete elementN;
-	elementN = new Lab6Primitive();
+	elementN = new Lab6Primitive(false);
+	elementB = new Lab6Primitive(true);
 	sendData();
 	update();
 }
@@ -457,6 +492,7 @@ void Canvas::createLab6Primitive() {
 void Canvas::createLab7Primitive() {
 	removeMovementHolder();
 	useNormals = true;
+	isLab6 = false;
 	currentProgram = programLab7;
 	currentLocs = &locs7;
 	if (elementN) delete elementN;

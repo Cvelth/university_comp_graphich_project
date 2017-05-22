@@ -47,10 +47,10 @@ class Canvas : public QOpenGLWidget, protected QOpenGLFunctions {
 private:
 	Color foreground, background;
 
-	GLuint* buffers;
+	GLuint *buffers, *buffers2;
 	CoordinatesHolder coordinates;
 	ComplexElement *element;
-	ComplexNormalElement *elementN;
+	ComplexNormalElement *elementN, *elementB;
 	
 	bool isMouseLocked;
 	bool useNormals;
@@ -74,6 +74,8 @@ protected:
 	AbstractMovementHolder* insertedMovementHolder;
 	bool isMovementHolderInserted;
 
+	bool isLab6;
+
 protected:
 	virtual void initializeGL() override;
 	virtual void resizeGL(int w, int h) override;
@@ -95,7 +97,7 @@ protected:
 	virtual void sendElement(SimpleElement* el, GLuint buffer);
 	virtual void sendElement(SimpleNormalElement* el, GLuint buffer);
 	virtual void sendElement(ComplexElement* el);
-	virtual void sendElement(ComplexNormalElement* el);
+	virtual void sendElement(GLuint* buffers, ComplexNormalElement* el);
 
 	virtual void drawElement(SimpleElement* el, GLuint buffer, float x = 0.f, float y = 0.f);
 	virtual void drawElement(SimpleElement* el, float x = 0.f, float y = 0.f);
